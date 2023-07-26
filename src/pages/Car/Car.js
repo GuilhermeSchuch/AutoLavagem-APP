@@ -146,7 +146,7 @@ const Car = () => {
 				</div>
 			</div>
 
-		</div>
+	</div>
   )
 }
 

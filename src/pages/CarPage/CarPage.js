@@ -83,7 +83,7 @@ const CarPage = () => {
 
 				<button type="submit" className="btn btn-primary">Atualizar</button>
 			</form>
-		</div>
+	</div>
   )
 }
 
