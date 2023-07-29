@@ -36,7 +36,7 @@ const EmployeePage = () => {
 			console.log(res.status);
 
 			if(res.status === 200){
-				navigate("/employee")
+				navigate("/employee");
 			}
 		});
 	}
