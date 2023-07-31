@@ -114,7 +114,10 @@ const Customer = () => {
 							{/* {console.log([customer.car])} */}
 							{[customer.car].map((car, index) => (
 								// <td>{ removeSpaceCase(removeKebabCase((car[index].plate))).toUpperCase() }</td>
-								<td>{ removeSpaceCase(removeKebabCase((car[index].plate))).toUpperCase() }</td>
+								// <td>{ car[index].plate ? removeSpaceCase(removeKebabCase((car[index].plate))).toUpperCase() : ''}</td>
+								<td>
+									{car[index]?.plate ? removeSpaceCase(removeKebabCase(car[index].plate)).toUpperCase() : ''}
+								</td>
 							))}
 
 							{/* {[customer.car].map((car, index) => console.log(car[index]))} */}

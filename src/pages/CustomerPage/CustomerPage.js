@@ -50,13 +50,13 @@ const CustomerPage = () => {
 		});
 	}
 
-	const handleAddCar = (e) => {
+	const handleAddCars = (e) => {
 		e.preventDefault();
 		console.log();
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/customer/addcar/${'a'}`,
-			data: { name: carName },
+			url: `http://localhost:3001/customer/addcars/${id}`,
+			data: { plates },
 			validateStatus: () => true,
 			withCredentials: true
 			})
@@ -144,18 +144,18 @@ const CustomerPage = () => {
 			</form>
 
 
-			<div class="btn-group">
-				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+			<div class="btn-group mt-2">
+				<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
 					Modificar carro(s) linkado(s) à esse cliente
 				</button>
 
 				<ul class="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-					<form onSubmit={handleAddCar}>
+					<form onSubmit={handleAddCars}>
 						{cars.map((car) => (
 								<li>
 									<label className="dropdown-item">
 										<input 
-											className="" 
+											className="me-1" 
 											type="checkbox" 
 											name="plate" 
 											id="flexRadioDefault1"
@@ -173,19 +173,17 @@ const CustomerPage = () => {
 									</label>
 								</li>
 						))}
-						
-								
-						
 
-						{/* <div className="modal-footer">
-							<button type="button" className="btn btn-secondary" onClick={() => navigate("/customer")}>Cancelar edição</button>
-							<button type="submit" className="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Linkar Carro</button>
-						</div> */}
+						<button type="submit" className="btn btn-primary dropdown-item">Linkar</button>	
 					</form>
 					{/* <li><a class="dropdown-item" href="#">Menu item</a></li>
 					<li><a class="dropdown-item" href="#">Menu item</a></li>
 					<li><a class="dropdown-item" href="#">Menu item</a></li> */}
 				</ul>
+			</div>
+
+			<div className="modal-footer">
+				<button type="button" className="btn btn-secondary" onClick={() => navigate("/customer")}>Cancelar edição</button>
 			</div>
 			
 		</div>
