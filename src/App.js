@@ -13,6 +13,8 @@ import Employee from "./pages/Employee/Employee";
 import EmployeePage from "./pages/EmployeePage/EmployeePage";
 import Customer from "./pages/Customer/Customer";
 import CustomerPage from "./pages/CustomerPage/CustomerPage";
+import Service from "./pages/Service/Service";
+import ServicePage from "./pages/ServicePage/ServicePage";
 
 // Components
 import Header from "./components/Header/Header";
@@ -33,6 +35,8 @@ function App() {
           <Route path="/employee/:id" element={<EmployeePage />} />
           <Route path="/customer" element={<Customer />} />
           <Route path="/customer/:id" element={<CustomerPage />} />
+          <Route path="/service" element={<Service />} />
+          <Route path="/service/:id" element={<ServicePage />} />
         </Routes>
       </BrowserRouter>
     </div>
