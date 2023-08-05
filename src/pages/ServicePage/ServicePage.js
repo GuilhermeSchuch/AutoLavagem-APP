@@ -92,89 +92,115 @@ const ServicePage = () => {
 				<button type="button" className="btn btn-secondary" onClick={() => navigate("/service")}>Cancelar edição</button>
 			</div>
 
-      <div class="container my-5">
-        <header class="pb-3 mb-4 border-bottom">
-          <div href="#" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+      <div className="container my-5">
+        <header className="pb-3 mb-4 border-bottom">
+          <div href="#" className="d-flex align-items-center text-body-emphasis text-decoration-none">
 
-            <span class="fs-4">Dados ({ convert(service?.createdAt) })</span>
+            <span className="fs-4">Dados ({ convert(service?.createdAt) })</span>
           </div>
         </header>
 
-        <div class="row align-items-md-stretch">
-          <div class="col-md-6 mb-3">
-            <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-              <h2>Cliente</h2>
-              <p>Nome: { service && removeKebabCase(service?.customer?.name) }</p>
-              <p>Tel: { service && removeKebabCase(service?.customer?.tel) }</p>
-              <p>CPF: { service && removeKebabCase(service?.customer?.cpf) }</p>
+        <div className="row align-items-md-stretch">
+          <div className="col-md-6 mb-3">
+            <div className="h-100 p-5 bg-body-tertiary border rounded-3">
+							<h2>Cliente</h2>
+							<div className="card p-3 my-2">
+								<ul>
+									<li>Nome: { service && removeKebabCase(service?.customer?.name) }</li>
+									<li>Tel: { service && removeKebabCase(service?.customer?.tel) }</li>
+									<li>CPF: { service && removeKebabCase(service?.customer?.cpf) }</li>
+								</ul>
+							</div>
             </div>
           </div>
 
-          <div class="col-md-6 mb-3">
-            <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+          <div className="col-md-6 mb-3">
+            <div className="h-100 p-5 bg-body-tertiary border rounded-3">
               <h2>Funcionário(s)</h2>
-              {employees.map((employee) => (
-								<div key={employee?._id}>
-									<p>{employee.services.some((es) => es.serviceId === id) ? "Nome: " + removeKebabCase(employee.name) : ''}</p>
-									{/* <p>Ganho: {employee.services.some((es) => es.serviceId === id ? console.log(es.gain) : console.log("Id do funcionário não condiz com id do parâmetro"))}</p> */}
-									
-									<p>{employee.services.some((es) => es.serviceId === id) ? 
-										`Ganho: R$${parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}` : ''
-									}</p>
+              {/* {employees.map((employee) => (
+								<div key={employee?._id} className="shadow">
+									<ul>
+										<li>{employee.services.some((es) => es.serviceId === id) ? "Nome: " + removeKebabCase(employee.name) : ''}</li>
+										
+										
+										<li>{employee.services.some((es) => es.serviceId === id) ? 
+											`Ganho: R$${parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}` : ''
+										}</li>
+									</ul>
 
 
-								</div>
-							))}
-
-
-              
-            </div>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-              <h2>Financeiro</h2>
-              <p>Dispesa (geral): R${ service && (service.expense).toFixed(2) }</p>
-              
-							{/* {employees.map((employee) => (
-								<div key={employee?._id}>
-									<p>Nome: {removeKebabCase(employee.name)}</p>
-									
-									
-									{console.log('Employee Gain:', 
-										parseFloat(employee.services.find((es) => es.serviceId === id)?.gain)
-									)}
-									
-									
-									<p>Ganho: {employee.services.some((es) => es.serviceId === id) ? 
-										`$${parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}` : 'N/A'
-									}</p>
 								</div>
 							))} */}
-							
-							{/* Calculate and display the total gain from all employees */}
-							<p>Total gasto com funcionários: R${
-								employees.reduce((total, employee) => {
-									const se = employee.services.find((es) => es.serviceId === id);
-									return se ? total + parseFloat(se.gain) : total;
-								}, 0).toFixed(2)
-							}</p>
+							{employees.map((employee) => {
+								if (employee.services.some((es) => es.serviceId === id)) {
+									return (
+										<div key={employee?._id} className="card p-3 my-2">
+											<ul className="d-flex flex-column justify-content-center">
+												<li>Nome: {removeKebabCase(employee.name)}</li>
+												<li>Ganho: R$ {parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}</li>
+											</ul>
+										</div>
+									);
+								}
+								return null;
+							})}
 
-							<p>Dispesa Total: R${
-								employees.reduce((total, employee) => {
-									const se = employee.services.find((es) => es.serviceId === id);
-									return se ? total + parseFloat(se.gain) : total;
-								}, parseFloat(service?.expense)).toFixed(2)
-							}</p>
 
-							<p>Lucro bruto: { parseFloat(service.gain).toFixed(2) }</p>
-							<p>Lucro líquido: R${
-								service.gain - employees.reduce((total, employee) => {
-									const se = employee.services.find((es) => es.serviceId === id);
-									return se ? total + parseFloat(se.gain) : total;
-								}, parseFloat(service?.expense)).toFixed(2)
-							}</p>
+              
+            </div>
+          </div>
 
+          <div className="col-md-6 mb-3">
+            <div className="h-100 p-5 bg-body-tertiary border rounded-3">
+              <h2>Financeiro</h2>
+							<div className="card p-3 my-2">
+								<ul>
+									<li>Dispesa (geral): R${ service && (service.expense).toFixed(2) }</li>
+									
+									{/* {employees.map((employee) => (
+										<div key={employee?._id}>
+											<p>Nome: {removeKebabCase(employee.name)}</p>
+											
+											
+											{console.log('Employee Gain:', 
+												parseFloat(employee.services.find((es) => es.serviceId === id)?.gain)
+											)}
+											
+											
+											<p>Ganho: {employee.services.some((es) => es.serviceId === id) ? 
+												`$${parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}` : 'N/A'
+											}</p>
+										</div>
+									))} */}
+									
+									{/* Calculate and display the total gain from all employees */}
+									<li>Total gasto com funcionários: R${
+										employees.reduce((total, employee) => {
+											const se = employee.services.find((es) => es.serviceId === id);
+											return se ? total + parseFloat(se.gain) : total;
+										}, 0).toFixed(2)
+									}</li>
+
+									<li>Dispesa Total: R${
+										employees.reduce((total, employee) => {
+											const se = employee.services.find((es) => es.serviceId === id);
+											return se ? total + parseFloat(se.gain) : total;
+										}, parseFloat(service?.expense)).toFixed(2)
+									}</li>
+								</ul>
+							</div>
+
+							<div className="card p-3 my-2">
+								<ul>
+									<li>Lucro bruto: { parseFloat(service?.gain).toFixed(2) }</li>
+									<li>Lucro líquido: R${
+										service?.gain - employees.reduce((total, employee) => {
+											const se = employee.services.find((es) => es.serviceId === id);
+											return se ? total + parseFloat(se.gain) : total;
+										}, parseFloat(service?.expense)).toFixed(2)
+									}</li>
+								</ul>
+							</div>
               
             </div>
           </div>

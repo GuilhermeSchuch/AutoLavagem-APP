@@ -41,8 +41,8 @@ const CustomerPage = () => {
 			withCredentials: true
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 
 			if(res.status === 200){
 				navigate("/customer");
@@ -52,7 +52,7 @@ const CustomerPage = () => {
 
 	const handleAddCars = (e) => {
 		e.preventDefault();
-		console.log();
+		// console.log();
 		axios({
 			method: 'PUT',
 			url: `http://localhost:3001/customer/addcars/${id}`,
@@ -61,8 +61,8 @@ const CustomerPage = () => {
 			withCredentials: true
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 
 			if(res.status === 200){
 				window.location.reload(true)
@@ -93,7 +93,7 @@ const CustomerPage = () => {
 
 	// console.log(plates.filter((item,
 	// 	index) => plates.indexOf(item) === index));
-	console.log(plates);
+	// console.log(plates);
 
   return (
     <div className="container">
@@ -144,15 +144,15 @@ const CustomerPage = () => {
 			</form>
 
 
-			<div class="btn-group mt-2">
-				<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+			<div className="btn-group mt-2">
+				<button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
 					Modificar carro(s) linkado(s) à esse cliente
 				</button>
 
-				<ul class="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+				<ul className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
 					<form onSubmit={handleAddCars}>
 						{cars.map((car) => (
-								<li>
+								<li key={car.plate}>
 									<label className="dropdown-item">
 										<input 
 											className="me-1" 

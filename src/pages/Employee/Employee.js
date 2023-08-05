@@ -18,7 +18,7 @@ const Employee = () => {
   const navigate = useNavigate();
 
   const employees = useFetch("/employee");
-	console.log(employees);
+	// console.log(employees);
 
 	const [name, setName] = useState('');
 
@@ -26,11 +26,11 @@ const Employee = () => {
 		e.preventDefault();
 
 		const id = e.target[0].value
-		console.log(id);
+		// console.log(id);
 
 		axios.delete(`http://localhost:3001/employee/${id}`).then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 			if(res.status === 204){
 				window.location.reload(true);
 			}
@@ -48,8 +48,8 @@ const Employee = () => {
 			withCredentials: true
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 
 			if(res.status === 201){
 				window.location.reload(true)

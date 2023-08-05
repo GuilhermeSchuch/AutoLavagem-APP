@@ -18,7 +18,7 @@ const Car = () => {
 	const navigate = useNavigate();
 	
 	const cars = useFetch("/car");
-	console.log(cars);
+	// console.log(cars);
 	const [name, setCarName] = useState('');
 	const [plate, setPlate] = useState('');
 
@@ -26,11 +26,11 @@ const Car = () => {
 		e.preventDefault();
 
 		const plate = e.target[0].value
-		console.log(plate);
+		// console.log(plate);
 
 		axios.delete(`http://localhost:3001/car/${plate}`).then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 			if(res.status === 204){
 				window.location.reload(true);
 			}
@@ -68,8 +68,8 @@ const Car = () => {
 			withCredentials: true
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 
 			if(res.status === 201){
 				window.location.reload(true)

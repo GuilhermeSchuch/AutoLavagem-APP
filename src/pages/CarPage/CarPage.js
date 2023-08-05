@@ -15,7 +15,7 @@ import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 const CarPage = () => {
 	const { plate } = useParams();
 	const [car] = useFetch(`/car/${plate}`);
-	console.log(car);
+	// console.log(car);
 
 	const [carName, setCarName] = useState('');
 	const [carPlate, setCarPlate] = useState('');
@@ -33,8 +33,8 @@ const CarPage = () => {
 			withCredentials: true
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 
 			if(res.status === 200){
 				navigate("/car")

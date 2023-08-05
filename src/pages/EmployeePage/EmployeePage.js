@@ -15,7 +15,7 @@ import { removeKebabCase } from "../../hooks/useRemoveCases";
 const EmployeePage = () => {
   const { id } = useParams();
 	const [employee] = useFetch(`/employee/${id}`);
-	console.log(employee);
+	// console.log(employee);
 
   const [name, setName] = useState('');
 
@@ -32,8 +32,8 @@ const EmployeePage = () => {
 			withCredentials: true
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
+			// console.log(res);
+			// console.log(res.status);
 
 			if(res.status === 200){
 				navigate("/employee");

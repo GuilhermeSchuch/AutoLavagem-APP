@@ -237,7 +237,7 @@ const Service = () => {
 										<select className="form-select" aria-label="Default select example" onChange={(e) => setCustomer(e.target.value)}>
 										<option value='' defaultValue>Selecione um cliente</option>
 										{customers.map((customer) => (
-											<option value={customer._id} >{ removeKebabCase(customer.name) }</option>
+											<option value={customer._id} key={customer._id}>{ removeKebabCase(customer.name) }</option>
 										))}  
 										</select>
 									</div>
@@ -285,7 +285,7 @@ const Service = () => {
 									<select name="id" className="form-select" aria-label="Default select example" onChange={handleChange}>
 									<option value='' defaultValue>Selecione um funcionário</option>
 									{employees.map((employee) => (
-										<option name="id" value={employee._id}>{ removeKebabCase(employee.name) }</option>
+										<option name="id" value={employee._id} key={employee._id}>{ removeKebabCase(employee.name) }</option>
 									))}  
 									</select>
 								</div>
