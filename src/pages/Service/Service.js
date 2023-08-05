@@ -118,7 +118,7 @@ const Service = () => {
 			console.log(res.status);
 
 			if(res.status === 200){
-				window.location.reload(true)
+				setEmployeeExpense({id: '', gain: ''});
 			}
 		});
 	}
@@ -194,25 +194,25 @@ const Service = () => {
 								<td>{ service.desc }</td>
 								<td>{ removeKebabCase(service.customer.name) }</td>
 
-								{employees.map((employee) => (
-									<td key={employee._id}>
-										{employee.services.some((es) => es.serviceId === service._id) ? removeKebabCase(employee.name) : ''}
-									</td>
-								))}
+								<td>
+									{employees.map((employee) => (
+										<React.Fragment key={employee._id}>
+											{employee.services.some((es) => es.serviceId === service._id) ? `${removeKebabCase(employee.name)}; ` : ''}
+										</React.Fragment>
+									))}
+								</td>
 
-						
-								{/* service.gain - (employee.services.gain + service.expense) */}
-		
+								<td>
+									<div className="d-flex">
+										<button type="button" className="update me-2" onClick={() => {handleUpdateService(service._id)}}>
+											<img src="/icons/newPage.png" alt={service.name} width="20" height="20" />
+										</button>
 
-								<td className="d-flex">
-									<button type="button" className="update me-2" onClick={() => {handleUpdateService(service._id)}}>
-										<img src="/icons/newPage.png" alt={service.name} width="20" height="20" />
-									</button>
-
-									<form onSubmit={handleDelete}>
-										<input type="hidden" name="id" value={service._id} />
-										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-									</form>
+										<form onSubmit={handleDelete}>
+											<input type="hidden" name="id" value={service._id} />
+											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+										</form>
+									</div>
 								</td>
 							</tr>
 						

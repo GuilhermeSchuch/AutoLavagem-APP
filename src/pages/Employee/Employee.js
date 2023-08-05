@@ -76,15 +76,18 @@ const Employee = () => {
 						<React.Fragment key={employee._id}>
 						<tr>
 							<td>{ removeKebabCase(employee.name) }</td>
-							<td className="d-flex">
-								<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
-									<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
-								</button>
 
-								<form onSubmit={handleDelete}>
-									<input type="hidden" name="id" value={employee._id} />
-									<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-								</form>
+							<td>
+								<div className="d-flex">
+									<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
+										<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
+									</button>
+
+									<form onSubmit={handleDelete}>
+										<input type="hidden" name="id" value={employee._id} />
+										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+									</form>
+								</div>
 							</td>
 						</tr>
 						

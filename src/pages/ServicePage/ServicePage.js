@@ -114,12 +114,17 @@ const ServicePage = () => {
             <div class="h-100 p-5 bg-body-tertiary border rounded-3">
               <h2>Funcionário(s)</h2>
               {employees.map((employee) => (
-									<div key={employee?._id}>
-										<p>Nome: {employee.services.some((es) => es.serviceId === service?._id) ? removeKebabCase(employee.name) : ''}</p>
-										{/* <p>Ganho: {employee.services.some((es) => es.serviceId === service._id) ? employee.services.some((es) => console.log(es))  : ''}</p> */}
+								<div key={employee?._id}>
+									<p>{employee.services.some((es) => es.serviceId === id) ? "Nome: " + removeKebabCase(employee.name) : ''}</p>
+									{/* <p>Ganho: {employee.services.some((es) => es.serviceId === id ? console.log(es.gain) : console.log("Id do funcionário não condiz com id do parâmetro"))}</p> */}
+									
+									<p>{employee.services.some((es) => es.serviceId === id) ? 
+										`Ganho: R$${parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}` : ''
+									}</p>
 
-									</div>
-								))}
+
+								</div>
+							))}
 
 
               
@@ -129,8 +134,46 @@ const ServicePage = () => {
           <div class="col-md-6 mb-3">
             <div class="h-100 p-5 bg-body-tertiary border rounded-3">
               <h2>Financeiro</h2>
-              <p>Dispesa: R${ service && (service.expense).toFixed(2) }</p>
-              <p>Ganho: R${ service && (service.gain).toFixed(2) }</p>
+              <p>Dispesa (geral): R${ service && (service.expense).toFixed(2) }</p>
+              
+							{/* {employees.map((employee) => (
+								<div key={employee?._id}>
+									<p>Nome: {removeKebabCase(employee.name)}</p>
+									
+									
+									{console.log('Employee Gain:', 
+										parseFloat(employee.services.find((es) => es.serviceId === id)?.gain)
+									)}
+									
+									
+									<p>Ganho: {employee.services.some((es) => es.serviceId === id) ? 
+										`$${parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}` : 'N/A'
+									}</p>
+								</div>
+							))} */}
+							
+							{/* Calculate and display the total gain from all employees */}
+							<p>Total gasto com funcionários: R${
+								employees.reduce((total, employee) => {
+									const se = employee.services.find((es) => es.serviceId === id);
+									return se ? total + parseFloat(se.gain) : total;
+								}, 0).toFixed(2)
+							}</p>
+
+							<p>Dispesa Total: R${
+								employees.reduce((total, employee) => {
+									const se = employee.services.find((es) => es.serviceId === id);
+									return se ? total + parseFloat(se.gain) : total;
+								}, parseFloat(service?.expense)).toFixed(2)
+							}</p>
+
+							<p>Lucro bruto: { parseFloat(service.gain).toFixed(2) }</p>
+							<p>Lucro líquido: R${
+								service.gain - employees.reduce((total, employee) => {
+									const se = employee.services.find((es) => es.serviceId === id);
+									return se ? total + parseFloat(se.gain) : total;
+								}, parseFloat(service?.expense)).toFixed(2)
+							}</p>
 
               
             </div>
