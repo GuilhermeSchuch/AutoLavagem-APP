@@ -1,4 +1,5 @@
 import React from 'react'
+import Decimal from 'decimal.js';
 
 // CSS
 import "./Service.css";
@@ -6,6 +7,7 @@ import "./Service.css";
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { convert } from "../../hooks/useConvertIsoDate";
+import { toFixed } from "../../hooks/useToFixed";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 
@@ -20,29 +22,91 @@ const Service = () => {
 	
 	const customers = useFetch("/customer");
 	const employees = useFetch("/employee");
-	const cars = useFetch("/car");
-
-
 	const services = useFetch("/service");
-  // const serviceId = services.pop();
-	// console.log(serviceId._id);
 
-	const [carName, setCarName] = useState('');
-	const [plate, setPlate] = useState('');
 
 
   const [serviceId, setServiceId] = useState('');
 
   const [customer, setCustomer] = useState('');
-  const [employeesId, setEmployeesId] = useState([]);
   const [expense, setExpense] = useState('');
   const [gain, setGain] = useState('');
   const [desc, setDesc] = useState('');
+  const [payment, setPayment] = useState({
+		payName: '',
+		payValue: '',
+		installment: '',
+		total: ''
+	});
 
 	const [employeeExpense, setEmployeeExpense] = useState({
 		id:'',
 		gain: 0
 	});
+
+	// const handlePayment = (e) => {
+	// 	const { value, name } = e.target;
+
+	// 	setPayment(prevValue => {
+  //     if(name === "name"){
+	// 			calculateResult(value, prevValue.payValue);
+  //       return {
+	// 				payName: value, 
+	// 				payValue: prevValue.payValue,
+	// 				total: prevValue.total
+	// 			}
+  //     }
+	// 		else if(name === "value"){
+	// 			calculateResult(prevValue.payName, value);
+  //       return {
+	// 				payName: prevValue.payName,
+	// 				payValue: value,
+	// 				total: prevValue.total
+	// 			}
+  //     }
+  //   });
+	// }
+
+	const handleFocus = () => {
+		setGain('');
+	}
+
+  const handlePayment = (e) => {
+		
+    const { value, name } = e.target;
+
+    setPayment((prevValue) => {
+      if (name === 'payName' && value === 'Cartão de Crédito') {
+        return {
+          ...prevValue,
+          payName: value
+        };
+      } else if (name === 'payName') {
+        return {
+          payName: value,
+          payValue: '',
+          installment: '',
+          total: ''
+        };
+      } else if (name === 'payValue') {
+        const installmentValue = (parseFloat(value) / parseInt(prevValue.installment)).toFixed(2);
+        const result = `${prevValue.installment}X${installmentValue} = ${value}`;
+        return {
+          ...prevValue,
+          payValue: value,
+          total: result
+        };
+      } else if (name === 'installment') {
+        const installmentValue = (parseFloat(prevValue.payValue) / parseInt(value)).toFixed(2);
+        const result = `${value}X${installmentValue} = ${prevValue.payValue}`;
+        return {
+          ...prevValue,
+          installment: value,
+          total: result
+        };
+      }
+    });
+  };
 
 	
   const handleChange = (e) => {
@@ -71,7 +135,7 @@ const Service = () => {
 		axios({
 			method: 'POST',
 			url: 'http://localhost:3001/service',
-			data: { customer, expense, gain, desc },
+			data: { customer, expense, gain, desc, payment },
 			validateStatus: () => true,
 			withCredentials: true
 			})
@@ -123,45 +187,6 @@ const Service = () => {
 		});
 	}
 
-	const handleAddCar = (e) => {
-		e.preventDefault();
-		console.log(plate);
-		axios({
-			method: 'PUT',
-			url: `http://localhost:3001/customer/addcar/${plate}`,
-			data: { name: carName, plate },
-			validateStatus: () => true,
-			withCredentials: true
-			})
-			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 200){
-				window.location.reload(true)
-			}
-		});
-	}
-
-  const handleAddEmployees = (e) => {
-		e.preventDefault();
-		axios({
-			method: 'PUT',
-			url: `http://localhost:3001/service/addemployees/${serviceId._id}`,
-			data: { employee: employeesId },
-			validateStatus: () => true,
-			withCredentials: true
-			})
-			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 200){
-				window.location.reload(true)
-			}
-		});
-	}
-
   useEffect(() => {
 		if(services){
       const service = services[services.length - 1];
@@ -171,6 +196,16 @@ const Service = () => {
 	}, [services]);
 
   // console.log(employeeExpense);
+	console.log(payment);
+	console.log(employeeExpense);
+
+	if(payment.payName === "Cartão de Crédito") {
+		document.querySelector("#gain")?.setAttribute('disabled', '');
+	}
+	else{
+		document.querySelector("#gain")?.removeAttribute('disabled');
+	}
+
 
   return (
     <div className="container">
@@ -253,6 +288,68 @@ const Service = () => {
 									</div>
 
 									<div className="mb-3">
+										<label className="col-form-label">Método de pagamento:</label>
+										
+										<select className="form-select" aria-label="Default select example" name="payName" onChange={handlePayment}  value={payment.payName}>
+											<option value='' defaultValue>Selecione um método</option>
+											<option value="Dinheiro">Dinheiro</option>
+											<option value="Pix">Pix</option>
+											<option value="Cartão de Débito">Cartão de Débito</option>
+											<option value="Cartão de Crédito">Cartão de Crédito</option>
+										</select>
+
+										{/* {payment.payName === "Cartão de Crédito" ? (
+											<div className="mt-3 input-group">
+											<span className="input-group-text">Valor e parcelas</span>
+											<input
+														type="number"
+														step={0.01}
+														className="form-control"
+														placeholder="Valor"
+														name="payValue"
+														value={payment?.payValue}
+														onChange={handlePayment}
+													/>
+													<input
+														type="number"
+														className="form-control"
+														placeholder="Parcelas"
+														name="installment"
+														value={payment?.installment}
+														onChange={handlePayment}
+													/>
+											</div>
+										) : ''} */}
+
+										{payment.payName === 'Cartão de Crédito' && (
+											
+											<div className="mt-3 input-group">
+												<input
+													type="number"
+													step={0.01}
+													className="form-control"
+													placeholder="Valor"
+													name="payValue"
+													value={payment.payValue}
+													onChange={handlePayment}
+													onFocus={handleFocus}
+												/>
+												<input
+													type="number"
+													className="form-control"
+													placeholder="Parcelas"
+													name="installment"
+													value={payment.installment}
+													onChange={handlePayment}
+													onFocus={handleFocus}
+												/>
+											</div>
+										)}
+										
+
+									</div>
+
+									<div className="mb-3">
 										<label className="col-form-label">Obs:</label>
 										<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={desc} onChange={(e) => setDesc(e.target.value)} />
 									</div>
@@ -282,7 +379,7 @@ const Service = () => {
 								<div className="mb-3">
 									<label className="col-form-label">Funcionário:</label> {/* Select */}
 									
-									<select name="id" className="form-select" aria-label="Default select example" onChange={handleChange}>
+									<select name="id" className="form-select" aria-label="Default select example" onChange={handleChange} >
 									<option value='' defaultValue>Selecione um funcionário</option>
 									{employees.map((employee) => (
 										<option name="id" value={employee._id} key={employee._id}>{ removeKebabCase(employee.name) }</option>

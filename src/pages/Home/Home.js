@@ -5,8 +5,6 @@ import "./Home.css";
 import useFetch from "../../hooks/useFetch";
 
 const Home = () => {
-  const data = useFetch("/car");
-  console.log(data);
   return (
     <div>Home</div>
   )

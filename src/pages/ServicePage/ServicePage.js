@@ -10,6 +10,7 @@ import axios from "axios";
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { convert } from "../../hooks/useConvertIsoDate";
+import { toFixed } from "../../hooks/useToFixed";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 
@@ -17,6 +18,7 @@ const ServicePage = () => {
 	const { plate } = useParams();
 	const [car] = useFetch(`/car/${plate}`);
 	// console.log(car);
+	
 
   const services = useFetch(`/service`);
   const employees = useFetch(`/employee`);
@@ -25,6 +27,7 @@ const ServicePage = () => {
   const [service] = useFetch(`/service/${id}`);
   const customers = useFetch(`/customer`);
   // console.log(service);
+	
 
 	const [carName, setCarName] = useState('');
 	const [carPlate, setCarPlate] = useState('');
@@ -137,7 +140,7 @@ const ServicePage = () => {
 										<div key={employee?._id} className="card p-3 my-2">
 											<ul className="d-flex flex-column justify-content-center">
 												<li>Nome: {removeKebabCase(employee.name)}</li>
-												<li>Ganho: R$ {parseFloat(employee.services.find((es) => es.serviceId === id)?.gain).toFixed(2)}</li>
+												<li>Ganho: R$ {toFixed(parseFloat(employee.services.find((es) => es.serviceId === id)?.gain))}</li>
 											</ul>
 										</div>
 									);
@@ -155,7 +158,7 @@ const ServicePage = () => {
               <h2>Financeiro</h2>
 							<div className="card p-3 my-2">
 								<ul>
-									<li>Dispesa (geral): R${ service && (service.expense).toFixed(2) }</li>
+									<li>Dispesa (geral): R${ service && (toFixed(service.expense)) }</li>
 									
 									{/* {employees.map((employee) => (
 										<div key={employee?._id}>
@@ -175,29 +178,33 @@ const ServicePage = () => {
 									
 									{/* Calculate and display the total gain from all employees */}
 									<li>Total gasto com funcionários: R${
-										employees.reduce((total, employee) => {
+										toFixed(employees.reduce((total, employee) => {
 											const se = employee.services.find((es) => es.serviceId === id);
 											return se ? total + parseFloat(se.gain) : total;
-										}, 0).toFixed(2)
+										}, 0))
 									}</li>
 
 									<li>Dispesa Total: R${
-										employees.reduce((total, employee) => {
+										toFixed(employees.reduce((total, employee) => {
 											const se = employee.services.find((es) => es.serviceId === id);
 											return se ? total + parseFloat(se.gain) : total;
-										}, parseFloat(service?.expense)).toFixed(2)
+										}, parseFloat(service?.expense)))
 									}</li>
 								</ul>
 							</div>
 
 							<div className="card p-3 my-2">
 								<ul>
-									<li>Lucro bruto: { parseFloat(service?.gain).toFixed(2) }</li>
-									<li>Lucro líquido: R${
-										service?.gain - employees.reduce((total, employee) => {
+									<li>Lucro bruto: { service?.gain ? toFixed(parseFloat(service?.gain)) : service?.payment.total }</li>
+									<li>Lucro líquido: R$
+										{
+										service?.gain ? toFixed(service?.gain - employees.reduce((total, employee) => {
 											const se = employee.services.find((es) => es.serviceId === id);
 											return se ? total + parseFloat(se.gain) : total;
-										}, parseFloat(service?.expense)).toFixed(2)
+										}, parseFloat(service?.expense))) : toFixed(service?.payment.payValue - employees.reduce((total, employee) => {
+											const se = employee.services.find((es) => es.serviceId === id);
+											return se ? total + parseFloat(se.gain) : total;
+										}, parseFloat(service?.expense)))
 									}</li>
 								</ul>
 							</div>

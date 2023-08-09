@@ -15,6 +15,7 @@ import Customer from "./pages/Customer/Customer";
 import CustomerPage from "./pages/CustomerPage/CustomerPage";
 import Service from "./pages/Service/Service";
 import ServicePage from "./pages/ServicePage/ServicePage";
+import Finance from "./pages/Finance/Finance";
 
 // Components
 import Header from "./components/Header/Header";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/customer/:id" element={<CustomerPage />} />
           <Route path="/service" element={<Service />} />
           <Route path="/service/:id" element={<ServicePage />} />
+          <Route path="/finance" element={<Finance />} />
         </Routes>
       </BrowserRouter>
     </div>

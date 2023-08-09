@@ -95,7 +95,7 @@ const Customer = () => {
 						<th scope="col">Nome</th>
 						<th scope="col">Telefone</th>
 						<th scope="col">CPF</th>
-						<th scope="col">Carro</th>
+						<th scope="col">Carro(s)</th>
 						<th scope="col">Ações</th>
 					</tr>
 				</thead>
@@ -108,19 +108,13 @@ const Customer = () => {
 							<td>{ removeSpaceCase(removeKebabCase((customer.tel))) }</td>
 							<td>{ removeSpaceCase(removeKebabCase((customer.cpf))) }</td>
 							
-							{/* {cars.map((car, index) => (
-								<td>{ removeSpaceCase(removeKebabCase((car.plate))).toUpperCase() }</td>
-							))} */}
-							{/* {console.log([customer.car])} */}
-							{[customer.car].map((car, index) => (
-								// <td>{ removeSpaceCase(removeKebabCase((car[index].plate))).toUpperCase() }</td>
-								// <td>{ car[index].plate ? removeSpaceCase(removeKebabCase((car[index].plate))).toUpperCase() : ''}</td>
-								<td key={index}>
-									{car[index]?.plate ? removeSpaceCase(removeKebabCase(car[index].plate)).toUpperCase() : ''}
-								</td>
-							))}
-
-							{/* {[customer.car].map((car, index) => console.log(car[index]))} */}
+							<td>
+								{cars.map((car) => (
+									<React.Fragment key={car.plate}>
+										{customer.car.some((cr) => cr.plate === car.plate) ? `${removeKebabCase(car.plate).toUpperCase()}; ` : ''}
+									</React.Fragment>
+								))}
+							</td>
 							
 							<td className="d-flex">
 								<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>

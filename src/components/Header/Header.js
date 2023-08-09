@@ -22,19 +22,23 @@ const Header = () => {
 
         <ul className="nav nav-pills">
             <li className="nav-item">
-              <Link to="/customer" className={location.pathname === '/customer' ? 'nav-link active' : 'nav-link'}>Clientes</Link>
+              <Link to="/customer" className={location.pathname === '/customer' ? 'nav-link active' : 'nav-link'}>{ window.innerWidth >= 992 ? 'Clientes' : <img src="/icons/customer.png" alt="Clientes" width="20" height="20" /> }</Link>
             </li>
 
             <li className="nav-item">
-              <Link to="/car" className={location.pathname === '/car' ? 'nav-link active' : 'nav-link'}>Carros</Link>
+              <Link to="/car" className={location.pathname === '/car' ? 'nav-link active' : 'nav-link'}>{ window.innerWidth >= 992 ? 'Carros' : <img src="/icons/car.png" alt="Carros" width="20" height="20" /> }</Link>
             </li>
 
             <li className="nav-item">
-              <Link to="/employee" className={location.pathname === '/employee' ? 'nav-link active' : 'nav-link'}>Funcionários</Link>
+              <Link to="/employee" className={location.pathname === '/employee' ? 'nav-link active' : 'nav-link'}>{ window.innerWidth >= 992 ? 'Funcionários' : <img src="/icons/employee.png" alt="Funcionários" width="20" height="20" /> }</Link>
             </li>
 
             <li className="nav-item">
-              <Link to="/service" className={location.pathname === '/service' ? 'nav-link active' : 'nav-link'}>Serviços</Link>
+              <Link to="/service" className={location.pathname === '/service' ? 'nav-link active' : 'nav-link'}>{ window.innerWidth >= 992 ? 'Serviços' : <img src="/icons/service.png" alt="Serviços" width="20" height="20" /> }</Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to="/finance" className={location.pathname === '/finance' ? 'nav-link active' : 'nav-link'}>{ window.innerWidth >= 992 ? 'Financeiro' : <img src="/icons/finance.png" alt="Financeiro" width="20" height="20" /> }</Link>
             </li>
 
             {/* <li className="nav-item"><a href="#" className="nav-link active" aria-current="page">Home</a></li> */}
