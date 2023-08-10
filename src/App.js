@@ -1,5 +1,5 @@
 // Router
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 // CSS
 import bootstrap from 'bootstrap'
@@ -20,25 +20,32 @@ import Finance from "./pages/Finance/Finance";
 // Components
 import Header from "./components/Header/Header";
 
+// Middlewares
+import isAuthenticated from "./middlewares/authMiddleware";
+
+const auth = isAuthenticated();
+
 
 function App() {
+  
+
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/car" element={<Car />} />
-          <Route path="/car/:plate" element={<CarPage />} />
-          <Route path="/employee" element={<Employee />} />
-          <Route path="/employee/:id" element={<EmployeePage />} />
-          <Route path="/customer" element={<Customer />} />
-          <Route path="/customer/:id" element={<CustomerPage />} />
-          <Route path="/service" element={<Service />} />
-          <Route path="/service/:id" element={<ServicePage />} />
-          <Route path="/finance" element={<Finance />} />
+          <Route path="/" element={auth ? <Home /> : <Login />} />
+          <Route path="/login" element={!auth ? <Login /> : <Home />} />
+          <Route path="/car" element={auth ? <Car /> : <Login />} />
+          <Route path="/car/:plate" element={auth ? <CarPage /> : <Login />} />
+          <Route path="/employee" element={auth ? <Employee /> : <Login />} />
+          <Route path="/employee/:id" element={auth ? <EmployeePage /> : <Login />} />
+          <Route path="/customer" element={auth ? <Customer /> : <Login />} />
+          <Route path="/customer/:id" element={auth ? <CustomerPage /> : <Login />} />
+          <Route path="/service" element={auth ? <Service /> : <Login />} />
+          <Route path="/service/:id" element={auth ? <ServicePage /> : <Login />} />
+          <Route path="/finance" element={auth ? <Finance /> : <Login />} />
         </Routes>
       </BrowserRouter>
     </div>

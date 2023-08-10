@@ -11,7 +11,7 @@ import axios from "axios";
 import { useState } from "react";
 
 const Login = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
@@ -31,19 +31,28 @@ const Login = () => {
         //     }
         // )
 
-        axios({
+        const response = await axios({
             method: 'POST',
             url: 'http://localhost:3001/login',
-            data: { username, password },
+            data: { email, password },
             validateStatus: () => true,
             withCredentials: true
         }).then(res => {
             console.log(res);
             console.log(res.status);
+            
             if(res.status === 200){
-                navigate("/")
+              const { token } = res.data;
+              localStorage.setItem('token', token);
+              window.location.reload(true);
+            }
+            else{
+                navigate("/login")
             }
         });
+
+        
+        
     }
 
   return (
@@ -52,7 +61,7 @@ const Login = () => {
             <h1 className="h3 mb-3 fw-normal">Por favor, faça o login</h1>
 
             <div className="form-floating">
-                <input type="email" className="form-control mb-2 rounded-2" id="floatingInput" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <input type="email" className="form-control mb-2 rounded-2" id="floatingInput" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label>Email</label>
             </div>
 

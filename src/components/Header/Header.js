@@ -5,12 +5,16 @@ import "./Header.css";
 import { useParams, useNavigate, NavLink, useLocation, Link } from 'react-router-dom';
 
 
-// Cookie
-import Cookies from 'js-cookie';
-
 const Header = () => {
-  // console.log(Cookies.get("user"));
+  const token = localStorage.getItem('token');
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    navigate("/");
+  };
 
   return (
     <div className="container">
@@ -42,7 +46,7 @@ const Header = () => {
             </li>
 
             {/* <li className="nav-item"><a href="#" className="nav-link active" aria-current="page">Home</a></li> */}
-            <li className="nav-item"><a href="/login" className="nav-link">Login</a></li>
+            {token ? <li className="nav-item"><a className="nav-link" onClick={(handleLogout)}>Logout</a></li> : <li className="nav-item"><a href="/login" className="nav-link">Login</a></li>}
         </ul>
         </header>
     </div>
