@@ -208,6 +208,8 @@ const ServicePage = () => {
 									}</li>
 								</ul>
 							</div>
+
+							<p>Método: { service?.payment.payName }</p>
               
             </div>
           </div>

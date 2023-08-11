@@ -1,6 +1,3 @@
-// Chart
-import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
 // CSS
 import "./Finance.css";
 
@@ -9,50 +6,9 @@ import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from 'react';
 import { convert } from "../../hooks/useConvertIsoDate";
 
-const data = [
-  {
-    "name": "Page A",
-    "uv": 4000,
-    "pv": 2400,
-    "amt": 2400
-  },
-  {
-    "name": "Page B",
-    "uv": 3000,
-    "pv": 1398,
-    "amt": 2210
-  },
-  {
-    "name": "Page C",
-    "uv": 2000,
-    "pv": 9800,
-    "amt": 2290
-  },
-  {
-    "name": "Page D",
-    "uv": 2780,
-    "pv": 3908,
-    "amt": 2000
-  },
-  {
-    "name": "Page E",
-    "uv": 1890,
-    "pv": 4800,
-    "amt": 2181
-  },
-  {
-    "name": "Page F",
-    "uv": 2390,
-    "pv": 3800,
-    "amt": 2500
-  },
-  {
-    "name": "Page G",
-    "uv": 3490,
-    "pv": 4300,
-    "amt": 2100
-  }
-]
+// Google Charts
+import { Chart } from 'react-google-charts';
+
 
 const Finance = () => {
   const services = useFetch("/service");
@@ -62,7 +18,7 @@ const Finance = () => {
   const [totalGain, setTotalGain] = useState(0);
   const [totalExpense, setTotalExpense] = useState('');
 
-  console.log(`totalGain: ${totalGain}`);
+  
 
   useEffect(() => {
     if (services) {
@@ -79,10 +35,6 @@ const Finance = () => {
       setTotalGain(totalGainSum);
     }
   }, [services]);
-
-
-
-
 
 
 
@@ -119,27 +71,23 @@ const Finance = () => {
     return result;
   }, {});
 
-  // Convert dailyData object to an array of objects
   const dailyDataArray = Object.values(dailyData);
-
-
-
 
 
   const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
     calculateMonthlyData();
-  }, []);
+  }, [services, employees]);
 
   const calculateMonthlyData = () => {
     const monthlyDataMap = {};
 
-    // Add employees' gains to monthlyDataMap
     employees.forEach(employee => {
-      employee.services.forEach(employeeService => {
-        const service = services.find(service => service._id === employeeService.serviceId);
+      employee?.services.forEach(employeeService => {
+        const service = services.find(service => service?._id === employeeService?.serviceId);
         if (service) {
+          console.log(service);
           const createdAt = new Date(service.createdAt);
           const year = createdAt.getFullYear();
           const month = String(createdAt.getMonth() + 1).padStart(2, '0');
@@ -184,38 +132,60 @@ const Finance = () => {
   };
 
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#FF0000', '#00FF00', '#0000FF'];
+  // Convert dailyData object to an array of arrays for Line Chart data
+  const chartData = [['Data', 'Ganho', 'Despesa']];
+  Object.values(dailyData).forEach((data) => {
+    chartData.push([data.date, data.totalGain, data.totalExpense]);
+  });
 
+
+  const pieData = [["Name", "Value"]];
+
+  for (const obj of monthlyData) {
+    const { totalGain, totalExpense } = obj;
+    pieData.push(["Ganho", totalGain]);
+    pieData.push(["Despesa", totalExpense]);
+  }
 
   return (
     <div className="container">
-      <h1>Últimos Ganhos</h1>
-
-      <ResponsiveContainer aspect={1.9}>
-        <LineChart
-          width={730}
-          height={250}
-          data={dailyDataArray}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip
-            labelFormatter={(label) => `Data: ${label}`} // Custom label format for tooltip
-          />
-          <Legend />
-          <Line type="monotone" dataKey="totalGain" stroke="#00A33E" name="Ganho" />
-          <Line type="monotone" dataKey="totalExpense" stroke="#F02318" name="Despesa" />
-        </LineChart>
-      </ResponsiveContainer>
-    
-
-
-
-
-
-
+      <div className="row">
+        <div>
+          <h1>Últimos Ganhos</h1>
+            <Chart
+              width={'100%'}
+              height={'400px'}
+              chartType="Line"
+              loader={<div>Carregando gráfico</div>}
+              data={chartData}
+              options={{
+                title: 'Ganhos e despesas',
+                hAxis: { title: 'Data' },
+                vAxis: { title: 'Quantia' }
+              }}
+            />
+        </div>
+      
+        <div className="mt-5">
+          <h1>Ganhos Mensais</h1>
+          {monthlyData && monthlyData.map((data, index) => (
+            <div key={index} className="shadow text-center col-sm-3">
+              <Chart
+                chartType="PieChart"
+                data={pieData}
+                options={{
+                  legend: "none",
+                  title: `${data.date}`,
+                  pieStartAngle: 100,
+                }}
+                width={"100%"}
+                height={"400px"}
+              />
+              
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
