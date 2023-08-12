@@ -1,0 +1,7 @@
+.serviceCard {
+  max-width: 18rem;
+}
+
+.serviceCard .card-header{
+  width: 100%;
+}

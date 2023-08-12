@@ -104,6 +104,7 @@ const ServicePage = () => {
         </header>
 
         <div className="row align-items-md-stretch">
+					
           <div className="col-md-6 mb-3">
             <div className="h-100 p-5 bg-body-tertiary border rounded-3">
 							<h2>Cliente</h2>
@@ -116,6 +117,8 @@ const ServicePage = () => {
 							</div>
             </div>
           </div>
+
+					
 
           <div className="col-md-6 mb-3">
             <div className="h-100 p-5 bg-body-tertiary border rounded-3">
@@ -158,7 +161,7 @@ const ServicePage = () => {
               <h2>Financeiro</h2>
 							<div className="card p-3 my-2">
 								<ul>
-									<li>Dispesa (geral): R${ service && (toFixed(service.expense)) }</li>
+									<li>Despesa (geral): R${ service && (toFixed(service.expense)) }</li>
 									
 									{/* {employees.map((employee) => (
 										<div key={employee?._id}>
@@ -184,7 +187,7 @@ const ServicePage = () => {
 										}, 0))
 									}</li>
 
-									<li>Dispesa Total: R${
+									<li>Despesa Total: R${
 										toFixed(employees.reduce((total, employee) => {
 											const se = employee.services.find((es) => es.serviceId === id);
 											return se ? total + parseFloat(se.gain) : total;

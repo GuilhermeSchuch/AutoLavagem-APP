@@ -46,7 +46,7 @@ const Header = () => {
             </li>
 
             {/* <li className="nav-item"><a href="#" className="nav-link active" aria-current="page">Home</a></li> */}
-            {token ? <li className="nav-item"><a className="nav-link" onClick={(handleLogout)}>Sair</a></li> : <li className="nav-item"><a href="/login" className="nav-link">Entrar</a></li>}
+            {token ? <li className="nav-item"><a href="/" className="nav-link" onClick={(handleLogout)}>Sair</a></li> : <li className="nav-item"><a href="/login" className="nav-link">Entrar</a></li>}
         </ul>
         </header>
     </div>

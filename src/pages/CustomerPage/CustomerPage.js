@@ -146,7 +146,7 @@ const CustomerPage = () => {
 
 			<div className="btn-group mt-2">
 				<button className="btn btn-info dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-					Modificar carro(s) linkado(s) à esse cliente
+					Modificar carro(s) linkado(s) a esse cliente
 				</button>
 
 				<ul className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">

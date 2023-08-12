@@ -5,6 +5,7 @@ import "./Finance.css";
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from 'react';
 import { convert } from "../../hooks/useConvertIsoDate";
+import { toFixed } from "../../hooks/useToFixed";
 
 // Google Charts
 import { Chart } from 'react-google-charts';
@@ -133,9 +134,9 @@ const Finance = () => {
 
 
   // Convert dailyData object to an array of arrays for Line Chart data
-  const chartData = [['Data', 'Ganho', 'Despesa']];
+  const chartData = [['Data', 'Ganho', 'Despesa', 'Líquido']];
   Object.values(dailyData).forEach((data) => {
-    chartData.push([data.date, data.totalGain, data.totalExpense]);
+    chartData.push([data.date, data.totalGain, data.totalExpense, data.totalGain - data.totalExpense]);
   });
 
 
@@ -169,10 +170,11 @@ const Finance = () => {
         <div className="mt-5">
           <h1>Ganhos Mensais</h1>
           {monthlyData && monthlyData.map((data, index) => (
-            <div key={index} className="shadow text-center col-sm-3">
+            <div key={index} className="shadow text-center col-sm-3 mb-3 p-2">
               <Chart
                 chartType="PieChart"
                 data={pieData}
+                loader={<div>Carregando gráfico</div>}
                 options={{
                   legend: "none",
                   title: `${data.date}`,
@@ -182,6 +184,7 @@ const Finance = () => {
                 height={"400px"}
               />
               
+              <span className="">Líquido: R${ toFixed(data.totalGain - data.totalExpense) }</span>
             </div>
           ))}
         </div>
