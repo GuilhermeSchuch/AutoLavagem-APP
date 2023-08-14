@@ -28,7 +28,7 @@ const Employee = () => {
 		const id = e.target[0].value
 		// console.log(id);
 
-		axios.delete(`http://localhost:3001/employee/${id}`).then(res => {
+		axios.delete(`https://alemaoautolavagem.onrender.com/employee/${id}`).then(res => {
 			// console.log(res);
 			// console.log(res.status);
 			if(res.status === 204){
@@ -42,7 +42,7 @@ const Employee = () => {
 
 		axios({
 			method: 'POST',
-			url: 'http://localhost:3001/employee',
+			url: 'https://alemaoautolavagem.onrender.com/employee',
 			data: { name },
 			validateStatus: () => true,
 			withCredentials: true

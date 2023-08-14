@@ -34,7 +34,7 @@ const Customer = () => {
 
 		axios({
 			method: 'POST',
-			url: 'http://localhost:3001/customer',
+			url: 'https://alemaoautolavagem.onrender.com/customer',
 			data: { name, tel, cpf },
 			validateStatus: () => true,
 			withCredentials: true
@@ -54,7 +54,7 @@ const Customer = () => {
 
 		const id = e.target[0].value
 
-		axios.delete(`http://localhost:3001/customer/${id}`).then(res => {
+		axios.delete(`https://alemaoautolavagem.onrender.com/customer/${id}`).then(res => {
 			console.log(res);
 			console.log(res.status);
 			if(res.status === 204){
@@ -72,7 +72,7 @@ const Customer = () => {
 		console.log(plate);
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/customer/addcar/${plate}`,
+			url: `https://alemaoautolavagem.onrender.com/customer/addcar/${plate}`,
 			data: { name: carName, plate },
 			validateStatus: () => true,
 			withCredentials: true
@@ -181,7 +181,7 @@ const Customer = () => {
 							<form onSubmit={handleSubmitCustomer}>
 									<div className="mb-3">
 										<label className="col-form-label">Nome:</label>
-										<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+										<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} required/>
 									</div>
 									<div className="mb-3">
 										<label className="col-form-label">Telefone:</label>

@@ -28,7 +28,7 @@ const Car = () => {
 		const plate = e.target[0].value
 		// console.log(plate);
 
-		axios.delete(`http://localhost:3001/car/${plate}`).then(res => {
+		axios.delete(`https://alemaoautolavagem.onrender.com/car/${plate}`).then(res => {
 			// console.log(res);
 			// console.log(res.status);
 			if(res.status === 204){
@@ -62,7 +62,7 @@ const Car = () => {
 
 		axios({
 			method: 'POST',
-			url: 'http://localhost:3001/car',
+			url: 'https://alemaoautolavagem.onrender.com/car',
 			data: { name, plate },
 			validateStatus: () => true,
 			withCredentials: true

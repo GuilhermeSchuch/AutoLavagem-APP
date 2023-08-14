@@ -26,7 +26,7 @@ const EmployeePage = () => {
 
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/employee/${id}`,
+			url: `https://alemaoautolavagem.onrender.com/employee/${id}`,
 			data: { name },
 			validateStatus: () => true,
 			withCredentials: true

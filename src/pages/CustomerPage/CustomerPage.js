@@ -35,7 +35,7 @@ const CustomerPage = () => {
 
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/customer/${id}`,
+			url: `https://alemaoautolavagem.onrender.com/customer/${id}`,
 			data: { name, tel, cpf },
 			validateStatus: () => true,
 			withCredentials: true
@@ -55,7 +55,7 @@ const CustomerPage = () => {
 		// console.log();
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/customer/addcars/${id}`,
+			url: `https://alemaoautolavagem.onrender.com/customer/addcars/${id}`,
 			data: { plates },
 			validateStatus: () => true,
 			withCredentials: true

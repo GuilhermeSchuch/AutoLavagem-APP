@@ -42,7 +42,7 @@ const ServicePage = () => {
 
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/service/${id}`,
+			url: `https://alemaoautolavagem.onrender.com/service/${id}`,
 			data: { desc },
 			validateStatus: () => true,
 			withCredentials: true

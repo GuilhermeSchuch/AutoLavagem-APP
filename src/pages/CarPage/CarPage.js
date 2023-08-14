@@ -27,7 +27,7 @@ const CarPage = () => {
 
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/car/${plate}`,
+			url: `https://alemaoautolavagem.onrender.com/car/${plate}`,
 			data: { name: carName, plate: carPlate },
 			validateStatus: () => true,
 			withCredentials: true

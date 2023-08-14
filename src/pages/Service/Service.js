@@ -134,7 +134,7 @@ const Service = () => {
 
 		axios({
 			method: 'POST',
-			url: 'http://localhost:3001/service',
+			url: 'https://alemaoautolavagem.onrender.com/service',
 			data: { customer, expense, gain, desc, payment },
 			validateStatus: () => true,
 			withCredentials: true
@@ -154,7 +154,7 @@ const Service = () => {
 
 		const id = e.target[0].value
 
-		axios.delete(`http://localhost:3001/service/${id}`).then(res => {
+		axios.delete(`https://alemaoautolavagem.onrender.com/service/${id}`).then(res => {
 			console.log(res);
 			console.log(res.status);
 			if(res.status === 204){
@@ -172,7 +172,7 @@ const Service = () => {
 
 		axios({
 			method: 'PUT',
-			url: `http://localhost:3001/employee/addservice/${employeeExpense.id}`,
+			url: `https://alemaoautolavagem.onrender.com/employee/addservice/${employeeExpense.id}`,
 			data: { gain: employeeExpense.gain },
 			validateStatus: () => true,
 			withCredentials: true
