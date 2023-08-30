@@ -44,8 +44,8 @@ const ServicePage = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/service/${id}`,
 			data: { desc },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			console.log(res);

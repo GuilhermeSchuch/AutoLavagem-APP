@@ -136,8 +136,8 @@ const Service = () => {
 			method: 'POST',
 			url: 'https://alemaoautolavagem.onrender.com/service',
 			data: { customer, expense, gain, desc, payment },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			console.log(res);
@@ -174,8 +174,8 @@ const Service = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/employee/addservice/${employeeExpense.id}`,
 			data: { gain: employeeExpense.gain },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			console.log(res);

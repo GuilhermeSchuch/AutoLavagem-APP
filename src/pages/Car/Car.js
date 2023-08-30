@@ -18,15 +18,17 @@ const Car = () => {
 	const navigate = useNavigate();
 	
 	const cars = useFetch("/car");
-	// console.log(cars);
+
 	const [name, setCarName] = useState('');
 	const [plate, setPlate] = useState('');
+
+	const token = localStorage.getItem('token');
 
 	const handleDelete = (e) => {
 		e.preventDefault();
 
 		const plate = e.target[0].value
-		// console.log(plate);
+		
 
 		axios.delete(`https://alemaoautolavagem.onrender.com/car/${plate}`).then(res => {
 			// console.log(res);
@@ -63,16 +65,11 @@ const Car = () => {
 		axios({
 			method: 'POST',
 			url: 'https://alemaoautolavagem.onrender.com/car',
-			data: { name, plate },
-			validateStatus: () => true,
-			withCredentials: true
+			data: { name, plate }
 			})
 			.then(res => {
-			// console.log(res);
-			// console.log(res.status);
-
-			if(res.status === 201){
-				window.location.reload(true)
+			if(res.status === 201 && !res.data.error){
+				window.location.reload(true);
 			}
 		});
 	}
@@ -93,20 +90,22 @@ const Car = () => {
 				</thead>
 
 				<tbody>
-					{cars.map((car, index) => (
+					{cars.map((car) => (
 						<React.Fragment key={car._id}>
 						<tr>
 							<td>{ removeKebabCase(car.name) }</td>
 							<td>{ removeSpaceCase(removeKebabCase((car.plate))).toUpperCase() }</td>
-							<td className="d-flex">
-								<button type="button" className="update me-2" onClick={() => {handleUpdateCar(car.plate)}}>
-									<img src="/icons/newPage.png" alt={car.plate} width="20" height="20" />
-								</button>
+							<td>
+								<div className="d-flex">
+									<button type="button" className="update me-2" onClick={() => {handleUpdateCar(car.plate)}}>
+										<img src="/icons/newPage.png" alt={car.plate} width="20" height="20" />
+									</button>
 
-								<form onSubmit={handleDelete}>
-									<input type="hidden" name="id" value={car.plate} />
-									<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-								</form>
+									<form onSubmit={handleDelete}>
+										<input type="hidden" name="id" value={car.plate} />
+										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+									</form>
+								</div>
 							</td>
 						</tr>
 						
@@ -118,6 +117,7 @@ const Car = () => {
 
 			{/* Create Car */}
 			<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="createModal">Adicionar Carro</button>
+
 			<div className="modal fade createModal" id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
 				<div className="modal-dialog">
 					<div className="modal-content">

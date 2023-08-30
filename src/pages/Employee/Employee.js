@@ -44,8 +44,8 @@ const Employee = () => {
 			method: 'POST',
 			url: 'https://alemaoautolavagem.onrender.com/employee',
 			data: { name },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			// console.log(res);

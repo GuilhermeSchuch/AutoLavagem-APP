@@ -37,8 +37,8 @@ const CustomerPage = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/customer/${id}`,
 			data: { name, tel, cpf },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			// console.log(res);
@@ -57,8 +57,8 @@ const CustomerPage = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/customer/addcars/${id}`,
 			data: { plates },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			// console.log(res);

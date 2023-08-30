@@ -28,8 +28,8 @@ const EmployeePage = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/employee/${id}`,
 			data: { name },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			// console.log(res);

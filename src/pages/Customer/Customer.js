@@ -36,8 +36,6 @@ const Customer = () => {
 			method: 'POST',
 			url: 'https://alemaoautolavagem.onrender.com/customer',
 			data: { name, tel, cpf },
-			validateStatus: () => true,
-			withCredentials: true
 			})
 			.then(res => {
 			console.log(res);
@@ -74,8 +72,8 @@ const Customer = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/customer/addcar/${plate}`,
 			data: { name: carName, plate },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			console.log(res);
@@ -116,15 +114,17 @@ const Customer = () => {
 								))}
 							</td>
 							
-							<td className="d-flex">
-								<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>
-									<img src="/icons/newPage.png" alt={customer.name} width="20" height="20" />
-								</button>
+							<td>
+								<div className="d-flex">
+									<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>
+										<img src="/icons/newPage.png" alt={customer.name} width="20" height="20" />
+									</button>
 
-								<form onSubmit={handleDelete}>
-									<input type="hidden" name="id" value={customer._id} />
-									<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-								</form>
+									<form onSubmit={handleDelete}>
+										<input type="hidden" name="id" value={customer._id} />
+										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+									</form>
+								</div>
 							</td>
 						</tr>
 						
@@ -134,39 +134,7 @@ const Customer = () => {
 				</tbody>
 			</table>
 
-			{/* Create Customer */}
-			{/* <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="createModal">Adicionar Cliente</button>
-			<div className="modal fade createModal" id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-				<div className="modal-dialog">
-					<div className="modal-content">
-						<div className="modal-header">
-							<h5 className="modal-title" id="createModalLabel">Adicionar Cliente</h5>
-							<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div className="modal-body">
-							<form onSubmit={handleSubmitCustomer}>
-								<div className="mb-3">
-									<label className="col-form-label">Nome:</label>
-									<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-								</div>
-								<div className="mb-3">
-									<label className="col-form-label">Telefone:</label>
-									<input type="text" className="form-control" autoComplete='off' id="plate" name="plate" value={tel} onChange={(e) => setTel(e.target.value)} />
-								</div>
-								<div className="mb-3">
-									<label className="col-form-label">CPF:</label>
-									<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={cpf} onChange={(e) => setCpf(e.target.value)} />
-								</div>
-
-								<div className="modal-footer">
-									<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-									<button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Adicionar</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div> */}
+	
 
 
 
@@ -192,10 +160,6 @@ const Customer = () => {
 										<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={cpf} onChange={(e) => setCpf(e.target.value)} />
 									</div>
 
-									{/* <div className="modal-footer">
-										<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-										<button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Adicionar</button>
-									</div> */}
 
 									<div className="modal-footer">
 										<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>

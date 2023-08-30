@@ -19,34 +19,42 @@ import Finance from "./pages/Finance/Finance";
 
 // Components
 import Header from "./components/Header/Header";
-
-// Middlewares
-import isAuthenticated from "./middlewares/authMiddleware";
-
-const auth = isAuthenticated();
-
+import Footer from "./components/Footer/Footer";
 
 function App() {
   
+  const setDate = localStorage.getItem('setDate');
+
+  if(setDate){
+    const currentTime = Date.now();
+    const timeDifference = currentTime - setDate;
+    const oneHourInMilliseconds = 60 * 60 * 1000;
+
+    if (timeDifference >= oneHourInMilliseconds) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('setDate');
+      window.location.href = "http://localhost:3000/login";
+    }
+  }
 
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
-
         <Routes>
-          <Route path="/" element={auth ? <Home /> : <Login />} />
-          <Route path="/login" element={!auth ? <Login /> : <Home />} />
-          <Route path="/car" element={auth ? <Car /> : <Login />} />
-          <Route path="/car/:plate" element={auth ? <CarPage /> : <Login />} />
-          <Route path="/employee" element={auth ? <Employee /> : <Login />} />
-          <Route path="/employee/:id" element={auth ? <EmployeePage /> : <Login />} />
-          <Route path="/customer" element={auth ? <Customer /> : <Login />} />
-          <Route path="/customer/:id" element={auth ? <CustomerPage /> : <Login />} />
-          <Route path="/service" element={auth ? <Service /> : <Login />} />
-          <Route path="/service/:id" element={auth ? <ServicePage /> : <Login />} />
-          <Route path="/finance" element={auth ? <Finance /> : <Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/car" element={<Car />} />
+          <Route path="/car/:plate" element={<CarPage />} />
+          <Route path="/employee" element={<Employee />} />
+          <Route path="/employee/:id" element={<EmployeePage />} />
+          <Route path="/customer" element={<Customer />} />
+          <Route path="/customer/:id" element={<CustomerPage />} />
+          <Route path="/service" element={<Service />} />
+          <Route path="/service/:id" element={<ServicePage />} />
+          <Route path="/finance" element={<Finance />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );

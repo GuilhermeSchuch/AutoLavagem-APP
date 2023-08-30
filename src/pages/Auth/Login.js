@@ -29,34 +29,23 @@ const Login = () => {
 
         const response = await axios({
             method: 'POST',
-            url: 'http://localhost:3001/login',
-            data: { email, password },
-            validateStatus: () => true,
-            withCredentials: true
+            url: 'https://alemaoautolavagem.onrender.com/login',
+            data: { email, password }
         }).then(res => {
-            console.log(res);
-            console.log(res.status);
-            
-            if(res.status === 200){
+            if(res.status === 200 && !res.data.error){
               const { token } = res.data;
+              const setDate = Date.now();
+
               localStorage.setItem('token', token);
-              window.location.reload(true);
+              localStorage.setItem('setDate', setDate);
+
+              navigate("/", { state: { title: "Login efetuado com sucesso!", message: res.data.msg } });
             }
-            // else if(res.status === 204){
-              
-            //   window.location.reload(true);
-            // }
             else{
-                setDisplay(true);
-                
-                setTimeout(() => {
-                  navigate("/login");
-                }, 2000);
+
             }
         });
         setIsButtonDisabled(false);
-        
-        
     }
 
   return (

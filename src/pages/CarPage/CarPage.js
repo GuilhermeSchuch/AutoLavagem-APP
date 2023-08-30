@@ -29,8 +29,8 @@ const CarPage = () => {
 			method: 'PUT',
 			url: `https://alemaoautolavagem.onrender.com/car/${plate}`,
 			data: { name: carName, plate: carPlate },
-			validateStatus: () => true,
-			withCredentials: true
+			// validateStatus: () => true,
+			// withCredentials: true
 			})
 			.then(res => {
 			// console.log(res);
