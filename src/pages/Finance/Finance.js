@@ -151,21 +151,26 @@ const Finance = () => {
   return (
     <div className="container">
       <div className="row">
-        <div>
-          <h1>Últimos Ganhos</h1>
-            <Chart
-              width={'100%'}
-              height={'400px'}
-              chartType="Line"
-              loader={<div>Carregando gráfico</div>}
-              data={chartData}
-              options={{
-                title: 'Ganhos e despesas',
-                hAxis: { title: 'Data' },
-                vAxis: { title: 'Quantia' }
-              }}
-            />
-        </div>
+      <div>
+        <h1>Últimos Ganhos</h1>
+        <Chart
+          width={'100%'}
+          height={'400px'}
+          chartType="LineChart"
+          loader={<div>Carregando gráfico</div>}
+          data={chartData}
+          options={{
+            title: 'Ganhos e despesas',
+            hAxis: { title: 'Data' },
+            vAxis: { title: 'Quantia' },
+            explorer: {
+              actions: ['dragToZoom', 'rightClickToReset'], // Enable zooming
+              axis: 'horizontal', // You can set 'vertical' for vertical zooming
+              keepInBounds: false, // Allow zooming beyond data bounds
+            },
+          }}
+        />
+      </div>
       
         <div className="mt-5">
           <h1>Ganhos Mensais</h1>
@@ -184,7 +189,7 @@ const Finance = () => {
                 height={"400px"}
               />
               
-              <span className="">Líquido: R${ toFixed(data.totalGain - data.totalExpense) }</span>
+              <span className="fw">Líquido: R${ toFixed(data.totalGain - data.totalExpense) }</span>
             </div>
           ))}
         </div>
