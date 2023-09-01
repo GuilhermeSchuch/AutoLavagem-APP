@@ -24,7 +24,11 @@ const Service = () => {
 	const employees = useFetch("/employee");
 	const services = useFetch("/service");
 
+	// Globals
+	const globalUrl = "http://localhost:3001";
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
 
+	const token = localStorage.getItem('token');
 
   const [serviceId, setServiceId] = useState('');
 
@@ -43,29 +47,6 @@ const Service = () => {
 		id:'',
 		gain: 0
 	});
-
-	// const handlePayment = (e) => {
-	// 	const { value, name } = e.target;
-
-	// 	setPayment(prevValue => {
-  //     if(name === "name"){
-	// 			calculateResult(value, prevValue.payValue);
-  //       return {
-	// 				payName: value, 
-	// 				payValue: prevValue.payValue,
-	// 				total: prevValue.total
-	// 			}
-  //     }
-	// 		else if(name === "value"){
-	// 			calculateResult(prevValue.payName, value);
-  //       return {
-	// 				payName: prevValue.payName,
-	// 				payValue: value,
-	// 				total: prevValue.total
-	// 			}
-  //     }
-  //   });
-	// }
 
 	const handleFocus = () => {
 		setGain('');
@@ -134,30 +115,26 @@ const Service = () => {
 
 		axios({
 			method: 'POST',
-			url: 'https://alemaoautolavagem.onrender.com/service',
+			url: `${globalUrl}/service`,
 			data: { customer, expense, gain, desc, payment },
-			// validateStatus: () => true,
-			// withCredentials: true
+			headers: { Authorization: 'Bearer ' + token }
 			})
 			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 201){
-				// window.location.reload(true)
-			}
 		});
 	}
 
 	const handleDelete = (e) => {
 		e.preventDefault();
 
-		const id = e.target[0].value
+		const id = e.target[0].value;
 
-		axios.delete(`https://alemaoautolavagem.onrender.com/service/${id}`).then(res => {
-			console.log(res);
-			console.log(res.status);
-			if(res.status === 204){
+		axios({
+			method: 'DELETE',
+			url: `${globalUrl}/service/${id}`,
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 204 && !res.data.error){
 				window.location.reload(true);
 			}
 		});
@@ -172,7 +149,7 @@ const Service = () => {
 
 		axios({
 			method: 'PUT',
-			url: `https://alemaoautolavagem.onrender.com/employee/addservice/${employeeExpense.id}`,
+			url: `${globalUrl}/employee/addservice/${employeeExpense.id}`,
 			data: { gain: employeeExpense.gain },
 			// validateStatus: () => true,
 			// withCredentials: true

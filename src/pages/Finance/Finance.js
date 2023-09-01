@@ -7,6 +7,9 @@ import { useState, useEffect } from 'react';
 import { convert } from "../../hooks/useConvertIsoDate";
 import { toFixed } from "../../hooks/useToFixed";
 
+// Components
+import PieChart from "../../components/PieChart/PieChart";
+
 // Google Charts
 import { Chart } from 'react-google-charts';
 
@@ -88,7 +91,6 @@ const Finance = () => {
       employee?.services.forEach(employeeService => {
         const service = services.find(service => service?._id === employeeService?.serviceId);
         if (service) {
-          console.log(service);
           const createdAt = new Date(service.createdAt);
           const year = createdAt.getFullYear();
           const month = String(createdAt.getMonth() + 1).padStart(2, '0');
@@ -147,6 +149,7 @@ const Finance = () => {
     pieData.push(["Ganho", totalGain]);
     pieData.push(["Despesa", totalExpense]);
   }
+  console.log(monthlyData);
 
   return (
     <div className="container">
@@ -174,24 +177,11 @@ const Finance = () => {
       
         <div className="mt-5">
           <h1>Ganhos Mensais</h1>
-          {monthlyData && monthlyData.map((data, index) => (
-            <div key={index} className="shadow text-center col-sm-3 mb-3 p-2">
-              <Chart
-                chartType="PieChart"
-                data={pieData}
-                loader={<div>Carregando gráfico</div>}
-                options={{
-                  legend: "none",
-                  title: `${data.date}`,
-                  pieStartAngle: 100,
-                }}
-                width={"100%"}
-                height={"400px"}
-              />
-              
-              <span className="fw">Líquido: R${ toFixed(data.totalGain - data.totalExpense) }</span>
-            </div>
-          ))}
+          <div className="d-flex flex-wrap">
+            {monthlyData.map((item, index) => (
+              <PieChart key={index} data={item} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

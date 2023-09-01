@@ -21,6 +21,7 @@ const useFetch = (url) => {
 			});
 
 			const data = response.data;
+
 			setApiData(data);
 		} catch (err) {
 			const error = err.response.data.error;
@@ -30,8 +31,8 @@ const useFetch = (url) => {
 	}
 
     useEffect(() => {
-		fetchData();
-	}, []);
+			fetchData();
+		}, []);
 
     return apiData;
 }

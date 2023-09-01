@@ -7,15 +7,17 @@ import "./Car.css";
 import useFetch from "../../hooks/useFetch";
 import { useState } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
+import { useNavigate, useLocation } from 'react-router-dom';
 
-// Router
-import { useNavigate } from 'react-router-dom';
+// Components
+import Alert from '../../components/Alert/Alert';
 
 // Axios
 import axios from "axios";
 
 const Car = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	
 	const cars = useFetch("/car");
 
@@ -29,35 +31,14 @@ const Car = () => {
 
 		const plate = e.target[0].value
 		
-
-		axios.delete(`https://alemaoautolavagem.onrender.com/car/${plate}`).then(res => {
-			// console.log(res);
-			// console.log(res.status);
-			if(res.status === 204){
+		axios.delete(`https://alemaoautolavagem.onrender.com/car/${plate}`, {
+			headers: { Authorization: 'Bearer ' + token }
+		}).then(res => {
+			if(res.status === 204 && !res.data.error){
 				window.location.reload(true);
 			}
 		});
 	}
-
-	// const handleUpdate = (e) => {
-	// 	e.preventDefault();
-
-	// 	axios({
-	// 		method: 'PUT',
-	// 		url: `http://localhost:3001/car/${plate}`,
-	// 		data: { name, plate },
-	// 		validateStatus: () => true,
-	// 		withCredentials: true
-	// 		})
-	// 		.then(res => {
-	// 		console.log(res);
-	// 		console.log(res.status);
-
-	// 		if(res.status === 200){
-	// 			navigate("/car")
-	// 		}
-	// 	});
-	// }
 
 	const handleSubmitCar = (e) => {
 		e.preventDefault();
@@ -65,7 +46,8 @@ const Car = () => {
 		axios({
 			method: 'POST',
 			url: 'https://alemaoautolavagem.onrender.com/car',
-			data: { name, plate }
+			data: { name, plate },
+			headers: { Authorization: 'Bearer ' + token }
 			})
 			.then(res => {
 			if(res.status === 201 && !res.data.error){
@@ -80,6 +62,7 @@ const Car = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
 			<table className="table table-hover">
 				<thead>
 					<tr>
@@ -92,23 +75,22 @@ const Car = () => {
 				<tbody>
 					{cars.map((car) => (
 						<React.Fragment key={car._id}>
-						<tr>
-							<td>{ removeKebabCase(car.name) }</td>
-							<td>{ removeSpaceCase(removeKebabCase((car.plate))).toUpperCase() }</td>
-							<td>
-								<div className="d-flex">
-									<button type="button" className="update me-2" onClick={() => {handleUpdateCar(car.plate)}}>
-										<img src="/icons/newPage.png" alt={car.plate} width="20" height="20" />
-									</button>
+							<tr>
+								<td>{ removeKebabCase(car.name) }</td>
+								<td>{ removeSpaceCase(removeKebabCase((car.plate))).toUpperCase() }</td>
+								<td>
+									<div className="d-flex">
+										<button type="button" className="update me-2" onClick={() => {handleUpdateCar(car.plate)}}>
+											<img src="/icons/newPage.png" alt={car.plate} width="20" height="20" />
+										</button>
 
-									<form onSubmit={handleDelete}>
-										<input type="hidden" name="id" value={car.plate} />
-										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-									</form>
-								</div>
-							</td>
-						</tr>
-						
+										<form onSubmit={handleDelete}>
+											<input type="hidden" name="id" value={car.plate} />
+											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+										</form>
+									</div>
+								</td>
+							</tr>		
 						</React.Fragment>
 					))}
 

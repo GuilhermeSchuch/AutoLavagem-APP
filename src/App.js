@@ -21,6 +21,10 @@ import Finance from "./pages/Finance/Finance";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 
+// Notifications
+import { ReactNotifications } from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css'
+
 function App() {
   
   const setDate = localStorage.getItem('setDate');
@@ -39,6 +43,7 @@ function App() {
 
   return (
     <div className="App">
+      <ReactNotifications />
       <BrowserRouter>
         <Header />
         <Routes>

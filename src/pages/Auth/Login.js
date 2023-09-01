@@ -2,7 +2,7 @@
 import "./Login.css";
 
 // Router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Components
 import Alert from "../../components/Alert/Alert";
@@ -14,70 +14,69 @@ import axios from "axios";
 import { useState } from "react";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-    const [display, setDisplay] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsButtonDisabled(true);
+  // Globals
+  // const globalUrl = "https://alemaoautolavagem.onrender.com";
+  const globalUrl = "http://localhost:3001";
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        const response = await axios({
-            method: 'POST',
-            url: 'https://alemaoautolavagem.onrender.com/login',
-            data: { email, password }
-        }).then(res => {
-            if(res.status === 200 && !res.data.error){
-              const { token } = res.data;
-              const setDate = Date.now();
+    setIsButtonDisabled(true);
+    setShowAlert(false);
 
-              localStorage.setItem('token', token);
-              localStorage.setItem('setDate', setDate);
+    const response = await axios({
+      method: 'POST',
+      url: `${globalUrl}/login`,
+      data: { email, password }
+    }).then(res => {
+      if(res.status === 200 && !res.data.error){
+        const { token } = res.data;
+        const setDate = Date.now();
 
-              navigate("/", { state: { title: "Login efetuado com sucesso!", message: res.data.msg } });
-            }
-            else{
+        localStorage.setItem('token', token);
+        localStorage.setItem('setDate', setDate);
 
-            }
-        });
-        setIsButtonDisabled(false);
-    }
+        navigate("/", { state: { title: "Login efetuado com sucesso!", message: res.data.msg } });
+      }
+    }).catch((err) => {
+      setShowAlert(true);
+      
+      navigate("/login", { state: { title: "Login não efetuado!", message: err.response.data.error, type: "danger" } });
+    });
+    setIsButtonDisabled(false);
+  }
 
   return (
     <>
-
-      <div className={display === false ? 'd-none' : 'd-block'}>
-        { <Alert text={"E-mail e/ou estão incorretos!"} /> }
-      </div>
+      {showAlert && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+      
       <main className="form-signin w-100 m-auto">
-          <form onSubmit={handleSubmit}>
-              <h1 className="h3 mb-3 fw-normal">Por favor, faça o login</h1>
+        <form onSubmit={handleSubmit}>
+          <h1 className="h3 mb-3 fw-normal">Por favor, faça o login</h1>
 
-              <div className="form-floating">
-                  <input type="email" className="form-control mb-2 rounded-2" id="floatingInput" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  <label>Email</label>
-              </div>
+          <div className="form-floating">
+            <input type="email" className="form-control mb-2 rounded-2" id="floatingInput" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <label>Email</label>
+          </div>
 
-              <div className="form-floating">
-                  <input type="password" className="form-control rounded-2" id="floatingPassword" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                  <label>Senha</label>
-              </div>
+          <div className="form-floating">
+            <input type="password" className="form-control rounded-2" id="floatingPassword" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <label>Senha</label>
+          </div>
 
-              <button className="btn btn-primary w-100 py-2" disabled={isButtonDisabled}>{ !isButtonDisabled ? 'Entrar' : 'Carregando...' }</button>
-
-
-          </form>
+          <button className="btn btn-primary w-100 py-2" disabled={isButtonDisabled}>{ !isButtonDisabled ? 'Entrar' : 'Carregando...' }</button>
+        </form>
       </main>
-
-
     </>
-
-
   )
 }
 

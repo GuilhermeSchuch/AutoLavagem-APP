@@ -14,31 +14,34 @@ import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 
 const CarPage = () => {
 	const { plate } = useParams();
+	const token = localStorage.getItem('token');
+
 	const [car] = useFetch(`/car/${plate}`);
-	// console.log(car);
 
 	const [carName, setCarName] = useState('');
 	const [carPlate, setCarPlate] = useState('');
 
 	const navigate = useNavigate();
 
+	// Globals
+	const globalUrl = "http://localhost:3001";
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'PUT',
-			url: `https://alemaoautolavagem.onrender.com/car/${plate}`,
+			url: `${globalUrl}/car/${plate}`,
 			data: { name: carName, plate: carPlate },
-			// validateStatus: () => true,
-			// withCredentials: true
+			headers: { Authorization: 'Bearer ' + token }
 			})
 			.then(res => {
-			// console.log(res);
-			// console.log(res.status);
-
 			if(res.status === 200){
-				navigate("/car")
+				navigate("/car", { state: { title: "Operação realizada com sucesso!", message: res.data.msg } });
 			}
+		}).catch((err) => {
+
 		});
 	}
 
