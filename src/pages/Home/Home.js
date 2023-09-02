@@ -1,6 +1,3 @@
-// CSS
-import "./Home.css";
-
 // Hooks
 import { useLocation } from 'react-router-dom';
 

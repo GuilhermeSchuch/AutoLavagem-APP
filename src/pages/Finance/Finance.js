@@ -13,16 +13,14 @@ import PieChart from "../../components/PieChart/PieChart";
 // Google Charts
 import { Chart } from 'react-google-charts';
 
-
 const Finance = () => {
   const services = useFetch("/service");
   const employees = useFetch("/employee");
-  // console.log(services);
+
 
   const [totalGain, setTotalGain] = useState(0);
   const [totalExpense, setTotalExpense] = useState('');
-
-  
+  const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
     if (services) {
@@ -39,8 +37,6 @@ const Finance = () => {
       setTotalGain(totalGainSum);
     }
   }, [services]);
-
-
 
   const dailyData = services.reduce((result, service) => {
     const date = convert(service.createdAt);
@@ -76,9 +72,6 @@ const Finance = () => {
   }, {});
 
   const dailyDataArray = Object.values(dailyData);
-
-
-  const [monthlyData, setMonthlyData] = useState([]);
 
   useEffect(() => {
     calculateMonthlyData();
@@ -137,6 +130,7 @@ const Finance = () => {
 
   // Convert dailyData object to an array of arrays for Line Chart data
   const chartData = [['Data', 'Ganho', 'Despesa', 'Líquido']];
+
   Object.values(dailyData).forEach((data) => {
     chartData.push([data.date, data.totalGain, data.totalExpense, data.totalGain - data.totalExpense]);
   });
@@ -149,7 +143,6 @@ const Finance = () => {
     pieData.push(["Ganho", totalGain]);
     pieData.push(["Despesa", totalExpense]);
   }
-  console.log(monthlyData);
 
   return (
     <div className="container">

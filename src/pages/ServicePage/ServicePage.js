@@ -16,44 +16,43 @@ import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 
 const ServicePage = () => {
 	const { plate } = useParams();
-	const [car] = useFetch(`/car/${plate}`);
-	// console.log(car);
-	
+	const { id } = useParams();
 
+	const navigate = useNavigate();
+
+	const token = localStorage.getItem('token');
+
+	const [car] = useFetch(`/car/${plate}`);
   const services = useFetch(`/service`);
   const employees = useFetch(`/employee`);
-
-  const { id } = useParams();
   const [service] = useFetch(`/service/${id}`);
   const customers = useFetch(`/customer`);
-  // console.log(service);
-	
-
+  
 	const [carName, setCarName] = useState('');
 	const [carPlate, setCarPlate] = useState('');
-
   const [desc, setDesc] = useState('');
   const [customer, setCustomer] = useState('');
 
-	const navigate = useNavigate();
+	// Globals
+	const globalUrl = "http://localhost:3001";
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'PUT',
-			url: `https://alemaoautolavagem.onrender.com/service/${id}`,
+			url: `${globalUrl}/service/${id}`,
 			data: { desc },
-			// validateStatus: () => true,
-			// withCredentials: true
-			})
-			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 200){
-				window.location.reload(true)
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
+				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -62,11 +61,6 @@ const ServicePage = () => {
 			setDesc(service.desc);
 		}
 	}, [service]);
-
-  const handleSubmitService = () => {}
-
-  
-  
 
   return (
     <div className="container">
@@ -86,7 +80,6 @@ const ServicePage = () => {
 						autoFocus
 					/>
 				</div>
-
 
 				<button type="submit" className="btn btn-primary">Atualizar</button>
 			</form>
@@ -117,8 +110,6 @@ const ServicePage = () => {
 							</div>
             </div>
           </div>
-
-					
 
           <div className="col-md-6 mb-3">
             <div className="h-100 p-5 bg-body-tertiary border rounded-3">

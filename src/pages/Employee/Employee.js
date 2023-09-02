@@ -1,8 +1,5 @@
 import React from 'react';
 
-// CSS
-import "./Employee.css";
-
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { useState } from "react";
@@ -18,22 +15,30 @@ const Employee = () => {
   const navigate = useNavigate();
 
   const employees = useFetch("/employee");
-	// console.log(employees);
 
 	const [name, setName] = useState('');
+
+	const token = localStorage.getItem('token');
+
+	// Globals
+	const globalUrl = "http://localhost:3001";
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
 
   const handleDelete = (e) => {
 		e.preventDefault();
 
 		const id = e.target[0].value
-		// console.log(id);
 
-		axios.delete(`https://alemaoautolavagem.onrender.com/employee/${id}`).then(res => {
-			// console.log(res);
-			// console.log(res.status);
-			if(res.status === 204){
+		axios.delete(`${globalUrl}/employee/${id}`, {
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 204 && !res.data.error){
 				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -42,18 +47,17 @@ const Employee = () => {
 
 		axios({
 			method: 'POST',
-			url: 'https://alemaoautolavagem.onrender.com/employee',
+			url: `${globalUrl}/employee`,
 			data: { name },
-			// validateStatus: () => true,
-			// withCredentials: true
-			})
-			.then(res => {
-			// console.log(res);
-			// console.log(res.status);
-
-			if(res.status === 201){
-				window.location.reload(true)
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 201 && !res.data.error){
+				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -74,23 +78,22 @@ const Employee = () => {
 				<tbody>
 					{employees.map((employee, index) => (
 						<React.Fragment key={employee._id}>
-						<tr>
-							<td>{ removeKebabCase(employee.name) }</td>
+							<tr>
+								<td>{ removeKebabCase(employee.name) }</td>
 
-							<td>
-								<div className="d-flex">
-									<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
-										<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
-									</button>
+								<td>
+									<div className="d-flex">
+										<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
+											<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
+										</button>
 
-									<form onSubmit={handleDelete}>
-										<input type="hidden" name="id" value={employee._id} />
-										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-									</form>
-								</div>
-							</td>
-						</tr>
-						
+										{/* <form onSubmit={handleDelete}>
+											<input type="hidden" name="id" value={employee._id} />
+											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+										</form> */}
+									</div>
+								</td>
+							</tr>
 						</React.Fragment>
 					))}
 

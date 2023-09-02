@@ -1,6 +1,3 @@
-// CSS
-import "./CarPage.css";
-
 // Router
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -35,13 +32,14 @@ const CarPage = () => {
 			url: `${globalUrl}/car/${plate}`,
 			data: { name: carName, plate: carPlate },
 			headers: { Authorization: 'Bearer ' + token }
-			})
-			.then(res => {
-			if(res.status === 200){
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
 				navigate("/car", { state: { title: "Operação realizada com sucesso!", message: res.data.msg } });
 			}
-		}).catch((err) => {
-
+		})
+		.catch((err) => {
+			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 

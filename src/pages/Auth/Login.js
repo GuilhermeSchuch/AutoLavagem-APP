@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 // Components
 import Alert from "../../components/Alert/Alert";
+import Loader from "../../components/Loader/Loader";
 
 // Axios
 import axios from "axios";
@@ -37,7 +38,8 @@ const Login = () => {
       method: 'POST',
       url: `${globalUrl}/login`,
       data: { email, password }
-    }).then(res => {
+    })
+    .then(res => {
       if(res.status === 200 && !res.data.error){
         const { token } = res.data;
         const setDate = Date.now();
@@ -47,7 +49,8 @@ const Login = () => {
 
         navigate("/", { state: { title: "Login efetuado com sucesso!", message: res.data.msg } });
       }
-    }).catch((err) => {
+    })
+    .catch((err) => {
       setShowAlert(true);
       
       navigate("/login", { state: { title: "Login não efetuado!", message: err.response.data.error, type: "danger" } });
@@ -73,7 +76,7 @@ const Login = () => {
             <label>Senha</label>
           </div>
 
-          <button className="btn btn-primary w-100 py-2" disabled={isButtonDisabled}>{ !isButtonDisabled ? 'Entrar' : 'Carregando...' }</button>
+          {!isButtonDisabled ? <button className="btn btn-primary w-100 py-2" disabled={isButtonDisabled}>{ !isButtonDisabled ? 'Entrar' : 'Carregando...' }</button> : <Loader />}
         </form>
       </main>
     </>

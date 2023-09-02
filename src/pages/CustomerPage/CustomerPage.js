@@ -1,6 +1,3 @@
-// CSS
-import "./CustomerPage.css";
-
 // Router
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -17,59 +14,59 @@ const CustomerPage = () => {
 
 	const [customer] = useFetch(`/customer/${id}`);
 	const cars = useFetch("/car");
-	// console.log([customer.car]);
-	// console.log(customersCars);
 
 	const [name, setName] = useState('');
 	const [tel, setTel] = useState('');
 	const [cpf, setCpf] = useState('');
 	const [car, setCar] = useState([]);
-
 	const [carName, setCarName] = useState('');
 	const [plates, setPlates] = useState([]);
 
 	const navigate = useNavigate();
+
+	const token = localStorage.getItem('token');
+
+	// Globals
+	const globalUrl = "http://localhost:3001";
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'PUT',
-			url: `https://alemaoautolavagem.onrender.com/customer/${id}`,
+			url: `${globalUrl}/customer/${id}`,
 			data: { name, tel, cpf },
-			// validateStatus: () => true,
-			// withCredentials: true
-			})
-			.then(res => {
-			// console.log(res);
-			// console.log(res.status);
-
-			if(res.status === 200){
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
 				navigate("/customer");
 			}
+		})
+		.catch((err) => {
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
 	const handleAddCars = (e) => {
 		e.preventDefault();
-		// console.log();
+		
 		axios({
 			method: 'PUT',
-			url: `https://alemaoautolavagem.onrender.com/customer/addcars/${id}`,
+			url: `${globalUrl}/customer/addcars/${id}`,
 			data: { plates },
-			// validateStatus: () => true,
-			// withCredentials: true
-			})
-			.then(res => {
-			// console.log(res);
-			// console.log(res.status);
-
-			if(res.status === 200){
-				window.location.reload(true)
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
+				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
-
 
 	useEffect(() => {
 		if(customer){
@@ -78,22 +75,7 @@ const CustomerPage = () => {
 			setCpf(removeSpaceCase(removeKebabCase((customer.cpf))).toUpperCase());
 			setCar(customer.car);
 		}
-
-		if(car){
-			const customersCars = car;
-
-			// {customersCars.map((cc, index) => (
-			// 	cars.map((car) => (
-			// 		cc.plate == car.plate ? setPlates([cc.plate]) : ''
-			// 	))
-			// ))}
-			// setTheArray(oldArray => [...oldArray, newElement]);
-		}
-	}, [customer, car]);
-
-	// console.log(plates.filter((item,
-	// 	index) => plates.indexOf(item) === index));
-	// console.log(plates);
+	}, [customer]);
 
   return (
     <div className="container">

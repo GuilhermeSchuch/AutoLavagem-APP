@@ -1,8 +1,5 @@
 import React from 'react';
 
-// CSS
-import "./Customer.css";
-
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { useState } from "react";
@@ -19,31 +16,34 @@ const Customer = () => {
 	
 	const customers = useFetch("/customer");
 	const cars = useFetch("/car");
-	// console.log(customers);
 
 	const [name, setName] = useState('');
 	const [tel, setTel] = useState('');
 	const [cpf, setCpf] = useState('');
 	const [car, setCar] = useState([]);
-
 	const [carName, setCarName] = useState('');
 	const [plate, setPlate] = useState('');
+
+	const token = localStorage.getItem('token');
+
+		// Globals
+		const globalUrl = "http://localhost:3001";
+		// const globalUrl = "https://alemaoautolavagem.onrender.com";
+
 
 	const handleSubmitCustomer = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'POST',
-			url: 'https://alemaoautolavagem.onrender.com/customer',
+			url: `${globalUrl}/customer`,
 			data: { name, tel, cpf },
-			})
-			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 201){
-				// window.location.reload(true)
-			}
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+		})
+		.catch((err) => {
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -52,12 +52,16 @@ const Customer = () => {
 
 		const id = e.target[0].value
 
-		axios.delete(`https://alemaoautolavagem.onrender.com/customer/${id}`).then(res => {
-			console.log(res);
-			console.log(res.status);
-			if(res.status === 204){
+		axios.delete(`${globalUrl}/customer/${id}`, {
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 204 && !res.data.error){
 				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -67,21 +71,20 @@ const Customer = () => {
 
 	const handleAddCar = (e) => {
 		e.preventDefault();
-		console.log(plate);
+		
 		axios({
 			method: 'PUT',
-			url: `https://alemaoautolavagem.onrender.com/customer/addcar/${plate}`,
+			url: `${globalUrl}/customer/addcar/${plate}`,
 			data: { name: carName, plate },
-			// validateStatus: () => true,
-			// withCredentials: true
-			})
-			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 200){
-				window.location.reload(true)
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
+				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -101,42 +104,37 @@ const Customer = () => {
 				<tbody>
 					{customers.map((customer, index) => (
 						<React.Fragment key={customer._id}>
-						<tr>
-							<td>{ removeKebabCase(customer.name) }</td>
-							<td>{ removeSpaceCase(removeKebabCase((customer.tel))) }</td>
-							<td>{ removeSpaceCase(removeKebabCase((customer.cpf))) }</td>
-							
-							<td>
-								{cars.map((car) => (
-									<React.Fragment key={car.plate}>
-										{customer.car.some((cr) => cr.plate === car.plate) ? `${removeKebabCase(car.plate).toUpperCase()}; ` : ''}
-									</React.Fragment>
-								))}
-							</td>
-							
-							<td>
-								<div className="d-flex">
-									<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>
-										<img src="/icons/newPage.png" alt={customer.name} width="20" height="20" />
-									</button>
+							<tr>
+								<td>{ removeKebabCase(customer.name) }</td>
+								<td>{ removeSpaceCase(removeKebabCase((customer.tel))) }</td>
+								<td>{ removeSpaceCase(removeKebabCase((customer.cpf))) }</td>
+								
+								<td>
+									{cars.map((car) => (
+										<React.Fragment key={car.plate}>
+											{customer.car.some((cr) => cr.plate === car.plate) ? `${removeKebabCase(car.plate).toUpperCase()}; ` : ''}
+										</React.Fragment>
+									))}
+								</td>
+								
+								<td>
+									<div className="d-flex">
+										<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>
+											<img src="/icons/newPage.png" alt={customer.name} width="20" height="20" />
+										</button>
 
-									<form onSubmit={handleDelete}>
-										<input type="hidden" name="id" value={customer._id} />
-										<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-									</form>
-								</div>
-							</td>
-						</tr>
-						
+										<form onSubmit={handleDelete}>
+											<input type="hidden" name="id" value={customer._id} />
+											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+										</form>
+									</div>
+								</td>
+							</tr>
 						</React.Fragment>
 					))}
 
 				</tbody>
 			</table>
-
-	
-
-
 
 			<div className="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
 				<div className="modal-dialog modal-dialog-centered">
@@ -195,18 +193,10 @@ const Customer = () => {
 								</div>
 							</form>
 						</div>
-						{/* <div class="modal-footer">
-							<button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back to first</button>
-						</div> */}
 					</div>
 				</div>
 			</div>
 			<button className="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Adicionar Cliente</button>
-
-
-
-
-
 	</div>
   )
 }

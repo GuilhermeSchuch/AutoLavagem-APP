@@ -26,17 +26,25 @@ const Car = () => {
 
 	const token = localStorage.getItem('token');
 
+	// Globals
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
+	const globalUrl = "http://localhost:3001";
+
 	const handleDelete = (e) => {
 		e.preventDefault();
 
 		const plate = e.target[0].value
 		
-		axios.delete(`https://alemaoautolavagem.onrender.com/car/${plate}`, {
+		axios.delete(`${globalUrl}/car/${plate}`, {
 			headers: { Authorization: 'Bearer ' + token }
-		}).then(res => {
+		})
+		.then(res => {
 			if(res.status === 204 && !res.data.error){
 				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -45,14 +53,17 @@ const Car = () => {
 
 		axios({
 			method: 'POST',
-			url: 'https://alemaoautolavagem.onrender.com/car',
+			url: `${globalUrl}/car`,
 			data: { name, plate },
 			headers: { Authorization: 'Bearer ' + token }
-			})
-			.then(res => {
+		})
+		.then(res => {
 			if(res.status === 201 && !res.data.error){
 				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -127,7 +138,6 @@ const Car = () => {
 					</div>
 				</div>
 			</div>
-
 	</div>
   )
 }

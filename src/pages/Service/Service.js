@@ -1,9 +1,6 @@
 import React from 'react'
 import Decimal from 'decimal.js';
 
-// CSS
-import "./Service.css";
-
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { convert } from "../../hooks/useConvertIsoDate";
@@ -31,7 +28,6 @@ const Service = () => {
 	const token = localStorage.getItem('token');
 
   const [serviceId, setServiceId] = useState('');
-
   const [customer, setCustomer] = useState('');
   const [expense, setExpense] = useState('');
   const [gain, setGain] = useState('');
@@ -42,7 +38,6 @@ const Service = () => {
 		installment: '',
 		total: ''
 	});
-
 	const [employeeExpense, setEmployeeExpense] = useState({
 		id:'',
 		gain: 0
@@ -53,7 +48,6 @@ const Service = () => {
 	}
 
   const handlePayment = (e) => {
-		
     const { value, name } = e.target;
 
     setPayment((prevValue) => {
@@ -89,7 +83,6 @@ const Service = () => {
     });
   };
 
-	
   const handleChange = (e) => {
     const { value, name } = e.target;
 
@@ -118,8 +111,11 @@ const Service = () => {
 			url: `${globalUrl}/service`,
 			data: { customer, expense, gain, desc, payment },
 			headers: { Authorization: 'Bearer ' + token }
-			})
-			.then(res => {
+		})
+		.then(res => {
+		})
+		.catch((err) => {
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -137,6 +133,9 @@ const Service = () => {
 			if(res.status === 204 && !res.data.error){
 				window.location.reload(true);
 			}
+		})
+		.catch((err) => {
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -151,16 +150,15 @@ const Service = () => {
 			method: 'PUT',
 			url: `${globalUrl}/employee/addservice/${employeeExpense.id}`,
 			data: { gain: employeeExpense.gain },
-			// validateStatus: () => true,
-			// withCredentials: true
-			})
-			.then(res => {
-			console.log(res);
-			console.log(res.status);
-
-			if(res.status === 200){
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
 				setEmployeeExpense({id: '', gain: ''});
 			}
+		})
+		.catch((err) => {
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
 		});
 	}
 
@@ -169,12 +167,7 @@ const Service = () => {
       const service = services[services.length - 1];
 			setServiceId(service)
 		}
-
 	}, [services]);
-
-  // console.log(employeeExpense);
-	console.log(payment);
-	console.log(employeeExpense);
 
 	if(payment.payName === "Cartão de Crédito") {
 		document.querySelector("#gain")?.setAttribute('disabled', '');
@@ -182,7 +175,6 @@ const Service = () => {
 	else{
 		document.querySelector("#gain")?.removeAttribute('disabled');
 	}
-
 
   return (
     <div className="container">
@@ -193,7 +185,6 @@ const Service = () => {
 						<th scope="col">Serviço</th>
 						<th scope="col">Cliente</th>
 						<th scope="col">Funcionário(s)</th>
-						{/* <th scope="col">Lucro</th> */}
 						<th scope="col">Ações</th>
 					</tr>
 				</thead>
@@ -275,29 +266,6 @@ const Service = () => {
 											<option value="Cartão de Crédito">Cartão de Crédito</option>
 										</select>
 
-										{/* {payment.payName === "Cartão de Crédito" ? (
-											<div className="mt-3 input-group">
-											<span className="input-group-text">Valor e parcelas</span>
-											<input
-														type="number"
-														step={0.01}
-														className="form-control"
-														placeholder="Valor"
-														name="payValue"
-														value={payment?.payValue}
-														onChange={handlePayment}
-													/>
-													<input
-														type="number"
-														className="form-control"
-														placeholder="Parcelas"
-														name="installment"
-														value={payment?.installment}
-														onChange={handlePayment}
-													/>
-											</div>
-										) : ''} */}
-
 										{payment.payName === 'Cartão de Crédito' && (
 											
 											<div className="mt-3 input-group">
@@ -323,7 +291,6 @@ const Service = () => {
 											</div>
 										)}
 										
-
 									</div>
 
 									<div className="mb-3">

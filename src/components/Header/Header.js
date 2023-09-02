@@ -1,6 +1,3 @@
-// CSS
-import "./Header.css";
-
 // Router
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
