@@ -2,14 +2,15 @@ import React from 'react';
 
 // Hooks
 import useFetch from "../../hooks/useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
-
-// Router
 import { useNavigate } from 'react-router-dom';
 
 // Axios
 import axios from "axios";
+
+// Components
+import Loader from '../../components/Loader/Loader';
 
 const Customer = () => {
 	const navigate = useNavigate();
@@ -23,12 +24,13 @@ const Customer = () => {
 	const [car, setCar] = useState([]);
 	const [carName, setCarName] = useState('');
 	const [plate, setPlate] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const token = localStorage.getItem('token');
 
-		// Globals
-		const globalUrl = "http://localhost:3001";
-		// const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// Globals
+	// const globalUrl = "http://localhost:3001";
+	const globalUrl = "https://alemaoautolavagem.onrender.com";
 
 
 	const handleSubmitCustomer = (e) => {
@@ -88,53 +90,66 @@ const Customer = () => {
 		});
 	}
 
+	useEffect(() => {
+		if(customers.length === 0){
+			setLoading(true);
+		}
+		else{
+			setLoading(false);
+		}
+  }, [customers]);
+
   return (
     <div className="container">
-			<table className="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col">Nome</th>
-						<th scope="col">Telefone</th>
-						<th scope="col">CPF</th>
-						<th scope="col">Carro(s)</th>
-						<th scope="col">Ações</th>
-					</tr>
-				</thead>
+			{!loading ? (
+				<table className="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Nome</th>
+							<th scope="col">Telefone</th>
+							<th scope="col">CPF</th>
+							<th scope="col">Carro(s)</th>
+							<th scope="col">Ações</th>
+						</tr>
+					</thead>
 
-				<tbody>
-					{customers.map((customer, index) => (
-						<React.Fragment key={customer._id}>
-							<tr>
-								<td>{ removeKebabCase(customer.name) }</td>
-								<td>{ removeSpaceCase(removeKebabCase((customer.tel))) }</td>
-								<td>{ removeSpaceCase(removeKebabCase((customer.cpf))) }</td>
-								
-								<td>
-									{cars.map((car) => (
-										<React.Fragment key={car.plate}>
-											{customer.car.some((cr) => cr.plate === car.plate) ? `${removeKebabCase(car.plate).toUpperCase()}; ` : ''}
-										</React.Fragment>
-									))}
-								</td>
-								
-								<td>
-									<div className="d-flex">
-										<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>
-											<img src="/icons/newPage.png" alt={customer.name} width="20" height="20" />
-										</button>
+					<tbody>
+						{customers.map((customer, index) => (
+							<React.Fragment key={customer._id}>
+								<tr>
+									<td>{ removeKebabCase(customer.name) }</td>
+									<td>{ removeSpaceCase(removeKebabCase((customer.tel))) }</td>
+									<td>{ removeSpaceCase(removeKebabCase((customer.cpf))) }</td>
+									
+									<td>
+										{cars.map((car) => (
+											<React.Fragment key={car.plate}>
+												{customer.car.some((cr) => cr.plate === car.plate) ? `${removeKebabCase(car.plate).toUpperCase()}; ` : ''}
+											</React.Fragment>
+										))}
+									</td>
+									
+									<td>
+										<div className="d-flex">
+											<button type="button" className="update me-2" onClick={() => {handleUpdateCustomer(customer._id)}}>
+												<img src="/icons/newPage.png" alt={customer.name} width="20" height="20" />
+											</button>
 
-										<form onSubmit={handleDelete}>
-											<input type="hidden" name="id" value={customer._id} />
-											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-										</form>
-									</div>
-								</td>
-							</tr>
-						</React.Fragment>
-					))}
+											<form onSubmit={handleDelete}>
+												<input type="hidden" name="id" value={customer._id} />
+												<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+											</form>
+										</div>
+									</td>
+								</tr>
+							</React.Fragment>
+						))}
 
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			) : (
+				<Loader />
+			)}
 
 			<div className="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
 				<div className="modal-dialog modal-dialog-centered">

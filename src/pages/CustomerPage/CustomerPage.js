@@ -27,8 +27,8 @@ const CustomerPage = () => {
 	const token = localStorage.getItem('token');
 
 	// Globals
-	const globalUrl = "http://localhost:3001";
-	// const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const globalUrl = "http://localhost:3001";
+	const globalUrl = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

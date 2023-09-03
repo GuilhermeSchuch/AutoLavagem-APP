@@ -5,12 +5,13 @@ import "./Car.css";
 
 // Hooks
 import useFetch from "../../hooks/useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Components
 import Alert from '../../components/Alert/Alert';
+import Loader from '../../components/Loader/Loader';
 
 // Axios
 import axios from "axios";
@@ -23,12 +24,13 @@ const Car = () => {
 
 	const [name, setCarName] = useState('');
 	const [plate, setPlate] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const token = localStorage.getItem('token');
 
 	// Globals
-	// const globalUrl = "https://alemaoautolavagem.onrender.com";
-	const globalUrl = "http://localhost:3001";
+	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const globalUrl = "http://localhost:3001";
 
 	const handleDelete = (e) => {
 		e.preventDefault();
@@ -71,42 +73,56 @@ const Car = () => {
 		navigate(`/car/${paramPlate}`);
 	}
 
+	useEffect(() => {
+		if(cars.length === 0){
+			setLoading(true);
+		}
+		else{
+			setLoading(false);
+		}
+  }, [cars]);
+
   return (
     <div className="container">
 			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
-			<table className="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col">Carro</th>
-						<th scope="col">Placa</th>
-						<th scope="col">Ações</th>
-					</tr>
-				</thead>
 
-				<tbody>
-					{cars.map((car) => (
-						<React.Fragment key={car._id}>
-							<tr>
-								<td>{ removeKebabCase(car.name) }</td>
-								<td>{ removeSpaceCase(removeKebabCase((car.plate))).toUpperCase() }</td>
-								<td>
-									<div className="d-flex">
-										<button type="button" className="update me-2" onClick={() => {handleUpdateCar(car.plate)}}>
-											<img src="/icons/newPage.png" alt={car.plate} width="20" height="20" />
-										</button>
+			{!loading ? (
+				<table className="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Carro</th>
+							<th scope="col">Placa</th>
+							<th scope="col">Ações</th>
+						</tr>
+					</thead>
 
-										<form onSubmit={handleDelete}>
-											<input type="hidden" name="id" value={car.plate} />
-											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-										</form>
-									</div>
-								</td>
-							</tr>		
-						</React.Fragment>
-					))}
+					<tbody>
+						{cars.map((car) => (
+							<React.Fragment key={car._id}>
+								<tr>
+									<td>{ removeKebabCase(car.name) }</td>
+									<td>{ removeSpaceCase(removeKebabCase((car.plate))).toUpperCase() }</td>
+									<td>
+										<div className="d-flex">
+											<button type="button" className="update me-2" onClick={() => {handleUpdateCar(car.plate)}}>
+												<img src="/icons/newPage.png" alt={car.plate} width="20" height="20" />
+											</button>
 
-				</tbody>
-			</table>
+											<form onSubmit={handleDelete}>
+												<input type="hidden" name="id" value={car.plate} />
+												<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+											</form>
+										</div>
+									</td>
+								</tr>		
+							</React.Fragment>
+						))}
+
+					</tbody>
+				</table>
+			) : (
+				<Loader />
+			)}
 
 			{/* Create Car */}
 			<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="createModal">Adicionar Carro</button>

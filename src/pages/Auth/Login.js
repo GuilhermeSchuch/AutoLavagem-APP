@@ -25,8 +25,8 @@ const Login = () => {
   const location = useLocation();
 
   // Globals
-  // const globalUrl = "https://alemaoautolavagem.onrender.com";
-  const globalUrl = "http://localhost:3001";
+  const globalUrl = "https://alemaoautolavagem.onrender.com";
+  // const globalUrl = "http://localhost:3001";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

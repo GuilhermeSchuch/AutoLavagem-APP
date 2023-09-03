@@ -2,14 +2,15 @@ import React from 'react';
 
 // Hooks
 import useFetch from "../../hooks/useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { removeKebabCase } from "../../hooks/useRemoveCases";
+import { useNavigate } from 'react-router-dom';
 
 // Axios
 import axios from "axios";
 
-// Router
-import { useNavigate } from 'react-router-dom';
+// Components
+import Loader from '../../components/Loader/Loader';
 
 const Employee = () => {
   const navigate = useNavigate();
@@ -17,12 +18,13 @@ const Employee = () => {
   const employees = useFetch("/employee");
 
 	const [name, setName] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const token = localStorage.getItem('token');
 
 	// Globals
-	const globalUrl = "http://localhost:3001";
-	// const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const globalUrl = "http://localhost:3001";
+	const globalUrl = "https://alemaoautolavagem.onrender.com";
 
   const handleDelete = (e) => {
 		e.preventDefault();
@@ -65,40 +67,48 @@ const Employee = () => {
 		navigate(`/employee/${id}`);
 	}
 
+	useEffect(() => {
+		if(employees.length === 0){
+			setLoading(true);
+		}
+		else{
+			setLoading(false);
+		}
+  }, [employees]);
+
   return (
     <div className="container">
-			<table className="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col">Nome</th>
-						<th scope="col">Ações</th>
-					</tr>
-				</thead>
+			{!loading ? (
+				<table className="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Nome</th>
+							<th scope="col">Ações</th>
+						</tr>
+					</thead>
 
-				<tbody>
-					{employees.map((employee, index) => (
-						<React.Fragment key={employee._id}>
-							<tr>
-								<td>{ removeKebabCase(employee.name) }</td>
+					<tbody>
+						{employees.map((employee, index) => (
+							<React.Fragment key={employee._id}>
+								<tr>
+									<td>{ removeKebabCase(employee.name) }</td>
 
-								<td>
-									<div className="d-flex">
-										<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
-											<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
-										</button>
+									<td>
+										<div className="d-flex">
+											<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
+												<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
+											</button>
+										</div>
+									</td>
+								</tr>
+							</React.Fragment>
+						))}
 
-										{/* <form onSubmit={handleDelete}>
-											<input type="hidden" name="id" value={employee._id} />
-											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-										</form> */}
-									</div>
-								</td>
-							</tr>
-						</React.Fragment>
-					))}
-
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			) : (
+				<Loader />
+			)}
 
 			{/* Create Employee */}
 			<button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="createModal">Adicionar Funcionário</button>

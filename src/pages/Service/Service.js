@@ -11,6 +11,9 @@ import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
 // Router
 import { useNavigate } from 'react-router-dom';
 
+// Components
+import Loader from '../../components/Loader/Loader';
+
 // Axios
 import axios from "axios";
 
@@ -22,11 +25,12 @@ const Service = () => {
 	const services = useFetch("/service");
 
 	// Globals
-	const globalUrl = "http://localhost:3001";
-	// const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const globalUrl = "http://localhost:3001";
+	const globalUrl = "https://alemaoautolavagem.onrender.com";
 
 	const token = localStorage.getItem('token');
 
+	const [loading, setLoading] = useState(false);
   const [serviceId, setServiceId] = useState('');
   const [customer, setCustomer] = useState('');
   const [expense, setExpense] = useState('');
@@ -169,6 +173,15 @@ const Service = () => {
 		}
 	}, [services]);
 
+	useEffect(() => {
+		if(services.length === 0){
+			setLoading(true);
+		}
+		else{
+			setLoading(false);
+		}
+  }, [services]);
+
 	if(payment.payName === "Cartão de Crédito") {
 		document.querySelector("#gain")?.setAttribute('disabled', '');
 	}
@@ -178,52 +191,56 @@ const Service = () => {
 
   return (
     <div className="container">
-			<table className="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col">Data</th>
-						<th scope="col">Serviço</th>
-						<th scope="col">Cliente</th>
-						<th scope="col">Funcionário(s)</th>
-						<th scope="col">Ações</th>
-					</tr>
-				</thead>
+			{!loading ? (
+				<table className="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Data</th>
+							<th scope="col">Serviço</th>
+							<th scope="col">Cliente</th>
+							<th scope="col">Funcionário(s)</th>
+							<th scope="col">Ações</th>
+						</tr>
+					</thead>
 
-				<tbody>
-					{services.map((service) => (
-						<React.Fragment key={service._id}>
-							<tr>
-								<td>{ convert(service.createdAt) }</td>
-								<td>{ service.desc }</td>
-								<td>{ removeKebabCase(service.customer.name) }</td>
+					<tbody>
+						{services.map((service) => (
+							<React.Fragment key={service._id}>
+								<tr>
+									<td>{ convert(service.createdAt) }</td>
+									<td>{ service.desc }</td>
+									<td>{ removeKebabCase(service.customer.name) }</td>
 
-								<td>
-									{employees.map((employee) => (
-										<React.Fragment key={employee._id}>
-											{employee.services.some((es) => es.serviceId === service._id) ? `${removeKebabCase(employee.name)}; ` : ''}
-										</React.Fragment>
-									))}
-								</td>
+									<td>
+										{employees.map((employee) => (
+											<React.Fragment key={employee._id}>
+												{employee.services.some((es) => es.serviceId === service._id) ? `${removeKebabCase(employee.name)}; ` : ''}
+											</React.Fragment>
+										))}
+									</td>
 
-								<td>
-									<div className="d-flex">
-										<button type="button" className="update me-2" onClick={() => {handleUpdateService(service._id)}}>
-											<img src="/icons/newPage.png" alt={service.name} width="20" height="20" />
-										</button>
+									<td>
+										<div className="d-flex">
+											<button type="button" className="update me-2" onClick={() => {handleUpdateService(service._id)}}>
+												<img src="/icons/newPage.png" alt={service.name} width="20" height="20" />
+											</button>
 
-										<form onSubmit={handleDelete}>
-											<input type="hidden" name="id" value={service._id} />
-											<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
-										</form>
-									</div>
-								</td>
-							</tr>
-						
-						</React.Fragment>
-					))}
+											<form onSubmit={handleDelete}>
+												<input type="hidden" name="id" value={service._id} />
+												<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+											</form>
+										</div>
+									</td>
+								</tr>
+							
+							</React.Fragment>
+						))}
 
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			) : (
+				<Loader />
+			)}
 
 			<div className="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabIndex="-1">
 				<div className="modal-dialog modal-dialog-centered">
@@ -348,9 +365,8 @@ const Service = () => {
 					</div>
 				</div>
 			</div>
-			<button className="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Adicionar Serviço</button>
 
-      
+			<button className="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Adicionar Serviço</button>      
     </div>
   )
 }
