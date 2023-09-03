@@ -147,26 +147,25 @@ const Finance = () => {
   return (
     <div className="container">
       <div className="row">
-      <div>
-        <h1>Últimos Ganhos</h1>
-        <Chart
-          width={'100%'}
-          height={'400px'}
-          chartType="LineChart"
-          loader={<div>Carregando gráfico</div>}
-          data={chartData}
-          options={{
-            title: 'Ganhos e despesas',
-            hAxis: { title: 'Data' },
-            vAxis: { title: 'Quantia' },
-            explorer: {
-              actions: ['dragToZoom', 'rightClickToReset'], // Enable zooming
-              axis: 'horizontal', // You can set 'vertical' for vertical zooming
-              keepInBounds: false, // Allow zooming beyond data bounds
-            },
-          }}
-        />
-      </div>
+        <div className="d-flex flex-column">
+          <h1>Últimos Ganhos</h1>
+          <Chart
+            width={'100%'}
+            height={'400px'}
+            chartType="LineChart"
+            loader={<div>Carregando gráfico</div>}
+            data={chartData}
+            options={{
+              title: 'Ganhos e despesas',
+              hAxis: { title: 'Data' },
+              explorer: {
+                actions: ['dragToZoom', 'rightClickToReset'],
+                axis: 'horizontal',
+                keepInBounds: false,
+              },
+            }}
+          />
+        </div>
       
         <div className="mt-5">
           <h1>Ganhos Mensais</h1>

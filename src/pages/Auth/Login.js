@@ -25,8 +25,8 @@ const Login = () => {
   const location = useLocation();
 
   // Globals
-  const globalUrl = "https://alemaoautolavagem.onrender.com";
-  // const globalUrl = "http://localhost:3001";
+  const URL = "https://alemaoautolavagem.onrender.com";
+  // const URL = "http://localhost:3001";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const Login = () => {
 
     const response = await axios({
       method: 'POST',
-      url: `${globalUrl}/login`,
+      url: `${URL}/login`,
       data: { email, password }
     })
     .then(res => {

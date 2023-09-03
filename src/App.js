@@ -1,5 +1,5 @@
 // Router
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // CSS
 import bootstrap from 'bootstrap'
@@ -16,6 +16,7 @@ import CustomerPage from "./pages/CustomerPage/CustomerPage";
 import Service from "./pages/Service/Service";
 import ServicePage from "./pages/ServicePage/ServicePage";
 import Finance from "./pages/Finance/Finance";
+import NotFound from "./pages/NotFound/NotFound";
 
 // Components
 import Header from "./components/Header/Header";
@@ -26,18 +27,18 @@ import { ReactNotifications } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css'
 
 function App() {
-  
   const setDate = localStorage.getItem('setDate');
 
   if(setDate){
     const currentTime = Date.now();
     const timeDifference = currentTime - setDate;
-    const oneHourInMilliseconds = 60 * 60 * 1000;
+    // const oneHourInMilliseconds = 60 * 60 * 1000;
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
 
-    if (timeDifference >= oneHourInMilliseconds) {
+    if (timeDifference >= oneDayInMilliseconds) {
       localStorage.removeItem('token');
       localStorage.removeItem('setDate');
-      window.location.href = "http://localhost:3000/login";
+      window.location.href = "https://alemaoautolavagem.netlify.app/login";
     }
   }
 
@@ -58,6 +59,7 @@ function App() {
           <Route path="/service" element={<Service />} />
           <Route path="/service/:id" element={<ServicePage />} />
           <Route path="/finance" element={<Finance />} />
+          <Route path='*' element={<NotFound />}/>
         </Routes>
         <Footer />
       </BrowserRouter>

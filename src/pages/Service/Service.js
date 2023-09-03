@@ -7,26 +7,26 @@ import { convert } from "../../hooks/useConvertIsoDate";
 import { toFixed } from "../../hooks/useToFixed";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
-
-// Router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Components
 import Loader from '../../components/Loader/Loader';
+import Alert from "../../components/Alert/Alert";
 
 // Axios
 import axios from "axios";
 
 const Service = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	
 	const customers = useFetch("/customer");
 	const employees = useFetch("/employee");
 	const services = useFetch("/service");
 
 	// Globals
-	// const globalUrl = "http://localhost:3001";
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
+	const URL = "https://alemaoautolavagem.onrender.com";
 
 	const token = localStorage.getItem('token');
 
@@ -112,7 +112,7 @@ const Service = () => {
 
 		axios({
 			method: 'POST',
-			url: `${globalUrl}/service`,
+			url: `${URL}/service`,
 			data: { customer, expense, gain, desc, payment },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -130,7 +130,7 @@ const Service = () => {
 
 		axios({
 			method: 'DELETE',
-			url: `${globalUrl}/service/${id}`,
+			url: `${URL}/service/${id}`,
 			headers: { Authorization: 'Bearer ' + token }
 		})
 		.then(res => {
@@ -152,7 +152,7 @@ const Service = () => {
 
 		axios({
 			method: 'PUT',
-			url: `${globalUrl}/employee/addservice/${employeeExpense.id}`,
+			url: `${URL}/employee/addservice/${employeeExpense.id}`,
 			data: { gain: employeeExpense.gain },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -191,6 +191,8 @@ const Service = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+
 			{!loading ? (
 				<table className="table table-hover">
 					<thead>

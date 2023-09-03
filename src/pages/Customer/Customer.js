@@ -4,16 +4,18 @@ import React from 'react';
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Axios
 import axios from "axios";
 
 // Components
 import Loader from '../../components/Loader/Loader';
+import Alert from "../../components/Alert/Alert";
 
 const Customer = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	
 	const customers = useFetch("/customer");
 	const cars = useFetch("/car");
@@ -29,8 +31,8 @@ const Customer = () => {
 	const token = localStorage.getItem('token');
 
 	// Globals
-	// const globalUrl = "http://localhost:3001";
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
+	const URL = "https://alemaoautolavagem.onrender.com";
 
 
 	const handleSubmitCustomer = (e) => {
@@ -38,7 +40,7 @@ const Customer = () => {
 
 		axios({
 			method: 'POST',
-			url: `${globalUrl}/customer`,
+			url: `${URL}/customer`,
 			data: { name, tel, cpf },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -54,7 +56,7 @@ const Customer = () => {
 
 		const id = e.target[0].value
 
-		axios.delete(`${globalUrl}/customer/${id}`, {
+		axios.delete(`${URL}/customer/${id}`, {
 			headers: { Authorization: 'Bearer ' + token }
 		})
 		.then(res => {
@@ -76,7 +78,7 @@ const Customer = () => {
 		
 		axios({
 			method: 'PUT',
-			url: `${globalUrl}/customer/addcar/${plate}`,
+			url: `${URL}/customer/addcar/${plate}`,
 			data: { name: carName, plate },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -101,6 +103,8 @@ const Customer = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+			
 			{!loading ? (
 				<table className="table table-hover">
 					<thead>

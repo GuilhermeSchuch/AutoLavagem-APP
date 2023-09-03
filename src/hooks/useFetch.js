@@ -11,8 +11,8 @@ const useFetch = (url) => {
 
 	const navigate = useNavigate();
 
-	// const globalUrl = "https://alemaoautolavagem.onrender.com";
-	const globalUrl = "http://localhost:3001";
+	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const globalUrl = "http://localhost:3001";
 
 	const fetchData = async () => {
 		try {

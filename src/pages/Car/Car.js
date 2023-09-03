@@ -29,15 +29,15 @@ const Car = () => {
 	const token = localStorage.getItem('token');
 
 	// Globals
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
-	// const globalUrl = "http://localhost:3001";
+	const URL = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
 
 	const handleDelete = (e) => {
 		e.preventDefault();
 
 		const plate = e.target[0].value
 		
-		axios.delete(`${globalUrl}/car/${plate}`, {
+		axios.delete(`${URL}/car/${plate}`, {
 			headers: { Authorization: 'Bearer ' + token }
 		})
 		.then(res => {
@@ -55,7 +55,7 @@ const Car = () => {
 
 		axios({
 			method: 'POST',
-			url: `${globalUrl}/car`,
+			url: `${URL}/car`,
 			data: { name, plate },
 			headers: { Authorization: 'Bearer ' + token }
 		})

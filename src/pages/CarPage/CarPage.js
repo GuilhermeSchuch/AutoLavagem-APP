@@ -1,6 +1,3 @@
-// Router
-import { useParams, useNavigate } from 'react-router-dom';
-
 // Axios
 import axios from "axios";
 
@@ -8,6 +5,10 @@ import axios from "axios";
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+
+// Components
+import Alert from "../../components/Alert/Alert";
 
 const CarPage = () => {
 	const { plate } = useParams();
@@ -19,17 +20,18 @@ const CarPage = () => {
 	const [carPlate, setCarPlate] = useState('');
 
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	// Globals
-	// const globalUrl = "http://localhost:3001";
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
+	const URL = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'PUT',
-			url: `${globalUrl}/car/${plate}`,
+			url: `${URL}/car/${plate}`,
 			data: { name: carName, plate: carPlate },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -52,6 +54,8 @@ const CarPage = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+
 			<h1>Modificar carro</h1>
 
 			<form onSubmit={handleSubmit}>

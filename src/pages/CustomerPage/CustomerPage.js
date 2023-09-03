@@ -1,6 +1,3 @@
-// Router
-import { useParams, useNavigate } from 'react-router-dom';
-
 // Axios
 import axios from "axios";
 
@@ -8,6 +5,10 @@ import axios from "axios";
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+
+// Components
+import Alert from "../../components/Alert/Alert";
 
 const CustomerPage = () => {
 	const { id } = useParams();
@@ -23,19 +24,20 @@ const CustomerPage = () => {
 	const [plates, setPlates] = useState([]);
 
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const token = localStorage.getItem('token');
 
 	// Globals
-	// const globalUrl = "http://localhost:3001";
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
+	const URL = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'PUT',
-			url: `${globalUrl}/customer/${id}`,
+			url: `${URL}/customer/${id}`,
 			data: { name, tel, cpf },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -54,7 +56,7 @@ const CustomerPage = () => {
 		
 		axios({
 			method: 'PUT',
-			url: `${globalUrl}/customer/addcars/${id}`,
+			url: `${URL}/customer/addcars/${id}`,
 			data: { plates },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -79,6 +81,8 @@ const CustomerPage = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+
 			<h1>Modificar Cliente</h1>
 
 			<form onSubmit={handleSubmit}>

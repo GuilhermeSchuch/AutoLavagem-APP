@@ -1,9 +1,6 @@
 // CSS
 import "./ServicePage.css";
 
-// Router
-import { useParams, useNavigate } from 'react-router-dom';
-
 // Axios
 import axios from "axios";
 
@@ -13,12 +10,17 @@ import { convert } from "../../hooks/useConvertIsoDate";
 import { toFixed } from "../../hooks/useToFixed";
 import { useState, useEffect } from "react";
 import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+
+// Components
+import Alert from "../../components/Alert/Alert";
 
 const ServicePage = () => {
 	const { plate } = useParams();
 	const { id } = useParams();
 
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const token = localStorage.getItem('token');
 
@@ -34,15 +36,15 @@ const ServicePage = () => {
   const [customer, setCustomer] = useState('');
 
 	// Globals
-	// const globalUrl = "http://localhost:3001";
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
+	const URL = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		axios({
 			method: 'PUT',
-			url: `${globalUrl}/service/${id}`,
+			url: `${URL}/service/${id}`,
 			data: { desc },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -64,6 +66,8 @@ const ServicePage = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+
 			<h1>Modificar serviço</h1>
 
 			<form onSubmit={handleSubmit}>

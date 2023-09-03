@@ -4,16 +4,18 @@ import React from 'react';
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from "react";
 import { removeKebabCase } from "../../hooks/useRemoveCases";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Axios
 import axios from "axios";
 
 // Components
 import Loader from '../../components/Loader/Loader';
+import Alert from "../../components/Alert/Alert";
 
 const Employee = () => {
   const navigate = useNavigate();
+	const location = useLocation();
 
   const employees = useFetch("/employee");
 
@@ -23,15 +25,15 @@ const Employee = () => {
 	const token = localStorage.getItem('token');
 
 	// Globals
-	// const globalUrl = "http://localhost:3001";
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	const URL = "http://localhost:3001";
+	// const URL = "https://alemaoautolavagem.onrender.com";
 
   const handleDelete = (e) => {
 		e.preventDefault();
 
 		const id = e.target[0].value
 
-		axios.delete(`${globalUrl}/employee/${id}`, {
+		axios.delete(`${URL}/employee/${id}`, {
 			headers: { Authorization: 'Bearer ' + token }
 		})
 		.then(res => {
@@ -40,7 +42,7 @@ const Employee = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -49,7 +51,7 @@ const Employee = () => {
 
 		axios({
 			method: 'POST',
-			url: `${globalUrl}/employee`,
+			url: `${URL}/employee`,
 			data: { name },
 			headers: { Authorization: 'Bearer ' + token }
 		})
@@ -59,7 +61,7 @@ const Employee = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -78,6 +80,8 @@ const Employee = () => {
 
   return (
     <div className="container">
+			{location?.state?.title && <Alert title={location?.state?.title} message={location?.state?.message} type={location?.state?.type ? location?.state?.type : "success"} />}
+
 			{!loading ? (
 				<table className="table table-hover">
 					<thead>
@@ -88,7 +92,7 @@ const Employee = () => {
 					</thead>
 
 					<tbody>
-						{employees.map((employee, index) => (
+						{employees.map((employee) => (
 							<React.Fragment key={employee._id}>
 								<tr>
 									<td>{ removeKebabCase(employee.name) }</td>
@@ -98,6 +102,11 @@ const Employee = () => {
 											<button type="button" className="update me-2" onClick={() => {handleUpdateEmployee(employee._id)}}>
 												<img src="/icons/newPage.png" alt={employee.name} width="20" height="20" />
 											</button>
+
+											<form onSubmit={handleDelete}>
+												<input type="hidden" name="id" value={employee._id} />
+												<button type="submit" className="del"><img src="/icons/trash.png" alt="Del" width="20" height="20" /></button>
+											</form>
 										</div>
 									</td>
 								</tr>
