@@ -44,7 +44,20 @@ const Header = () => {
             <Link to="/finance" className={location.pathname === '/finance' ? 'nav-link active' : 'nav-link'}>{ window.innerWidth >= 992 ? 'Financeiro' : <img src="/icons/finance.png" alt="Financeiro" width="20" height="20" /> }</Link>
           </li>
 
-          {token ? <li className="nav-item"><a href="/" className="nav-link" onClick={(handleLogout)}>Sair</a></li> : <li className="nav-item"><a href="/login" className="nav-link">Entrar</a></li>}
+          {token ? (
+            <li className="nav-item">
+              <div className="dropdown text-end nav-link">
+                <a href="#" className="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="/icons/user.png" alt="Perfil" width="20" height="20" className="rounded-circle" />
+                </a>
+                <ul className="dropdown-menu text-small">
+                  <li><a className="dropdown-item" href="/profile">Perfil</a></li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li><a className="dropdown-item" href="#" onClick={(e) => handleLogout(e)}>Sair</a></li>
+                </ul>
+              </div>
+            </li>
+          ) : <li className="nav-item"><a href="/login" className="nav-link">Entrar</a></li>}
         </ul>
       </header>
     </div>

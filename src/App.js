@@ -17,6 +17,7 @@ import Service from "./pages/Service/Service";
 import ServicePage from "./pages/ServicePage/ServicePage";
 import Finance from "./pages/Finance/Finance";
 import NotFound from "./pages/NotFound/NotFound";
+import Profile from "./pages/Profile/Profile";
 
 // Components
 import Header from "./components/Header/Header";
@@ -60,6 +61,7 @@ function App() {
           <Route path="/service/:id" element={<ServicePage />} />
           <Route path="/finance" element={<Finance />} />
           <Route path='*' element={<NotFound />}/>
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -36,8 +36,9 @@ const ServicePage = () => {
   const [customer, setCustomer] = useState('');
 
 	// Globals
+	const URL = "https://white-grasshopper-gear.cyclic.cloud";
+	// const URL = "https://alemaoautolavagem.onrender.com";
 	// const URL = "http://localhost:3001";
-	const URL = "https://alemaoautolavagem.onrender.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

@@ -11,12 +11,13 @@ const useFetch = (url) => {
 
 	const navigate = useNavigate();
 
-	const globalUrl = "https://alemaoautolavagem.onrender.com";
+	const URL = "https://white-grasshopper-gear.cyclic.cloud";
+	// const globalUrl = "https://alemaoautolavagem.onrender.com";
 	// const globalUrl = "http://localhost:3001";
 
 	const fetchData = async () => {
 		try {
-			const response = await axios.get(`${globalUrl}${url}`, {
+			const response = await axios.get(`${URL}${url}`, {
       	headers: { Authorization: 'Bearer ' + token }
 			});
 

@@ -21,6 +21,7 @@ const Finance = () => {
   const [totalGain, setTotalGain] = useState(0);
   const [totalExpense, setTotalExpense] = useState('');
   const [monthlyData, setMonthlyData] = useState([]);
+  const [showChart, setShowChart] = useState(false);
 
   useEffect(() => {
     if (services) {
@@ -135,7 +136,7 @@ const Finance = () => {
     chartData.push([data.date, data.totalGain, data.totalExpense, data.totalGain - data.totalExpense]);
   });
 
-
+  
   const pieData = [["Name", "Value"]];
 
   for (const obj of monthlyData) {
@@ -144,27 +145,40 @@ const Finance = () => {
     pieData.push(["Despesa", totalExpense]);
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowChart(true);
+    }, 1000)
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
         <div className="d-flex flex-column">
           <h1>Últimos Ganhos</h1>
-          <Chart
-            width={'100%'}
-            height={'400px'}
-            chartType="LineChart"
-            loader={<div>Carregando gráfico</div>}
-            data={chartData}
-            options={{
-              title: 'Ganhos e despesas',
-              hAxis: { title: 'Data' },
-              explorer: {
-                actions: ['dragToZoom', 'rightClickToReset'],
-                axis: 'horizontal',
-                keepInBounds: false,
-              },
-            }}
-          />
+
+          <div className="shadow">
+            {showChart && (
+              <Chart
+                width={'100%'}
+                height={'500px'}
+                chartType="LineChart"
+                loader={<div>Carregando gráfico</div>}
+                data={chartData}
+                options={{
+                  title: 'Ganhos e despesas',
+                  hAxis: { title: 'Data' },
+                  xAxis: { title: 'Quantia' },
+                  explorer: {
+                    actions: ['dragToZoom', 'rightClickToReset'],
+                    axis: 'horizontal',
+                    keepInBounds: false,
+                  },
+                }}
+              />
+            )}
+            
+          </div>
         </div>
       
         <div className="mt-5">
