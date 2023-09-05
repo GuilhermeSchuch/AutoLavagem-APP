@@ -48,7 +48,7 @@ const Customer = () => {
 		.then(res => {
 		})
 		.catch((err) => {
-			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -66,7 +66,7 @@ const Customer = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -89,7 +89,7 @@ const Customer = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/customer", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 

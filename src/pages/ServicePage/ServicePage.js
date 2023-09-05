@@ -9,14 +9,13 @@ import useFetch from "../../hooks/useFetch";
 import { convert } from "../../hooks/useConvertIsoDate";
 import { toFixed } from "../../hooks/useToFixed";
 import { useState, useEffect } from "react";
-import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
+import { removeKebabCase } from "../../hooks/useRemoveCases";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 // Components
 import Alert from "../../components/Alert/Alert";
 
 const ServicePage = () => {
-	const { plate } = useParams();
 	const { id } = useParams();
 
 	const navigate = useNavigate();
@@ -24,22 +23,16 @@ const ServicePage = () => {
 
 	const token = localStorage.getItem('token');
 
-	const [car] = useFetch(`/car/${plate}`);
-  const services = useFetch(`/service`);
   const employees = useFetch(`/employee`);
   const [service] = useFetch(`/service/${id}`);
-  const customers = useFetch(`/customer`);
   
-	const [carName, setCarName] = useState('');
-	const [carPlate, setCarPlate] = useState('');
   const [desc, setDesc] = useState('');
-  const [customer, setCustomer] = useState('');
 
 	// Globals
 	const URL = "https://white-grasshopper-gear.cyclic.cloud";
 	// const URL = "https://alemaoautolavagem.onrender.com";
 	// const URL = "http://localhost:3001";
-
+	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -55,7 +48,7 @@ const ServicePage = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 

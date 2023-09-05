@@ -42,7 +42,7 @@ const EmployeePage = () => {
       }
 		})
     .catch((err) => {
-			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/employee", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 

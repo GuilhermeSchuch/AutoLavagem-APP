@@ -1,12 +1,10 @@
 import React from 'react'
-import Decimal from 'decimal.js';
 
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { convert } from "../../hooks/useConvertIsoDate";
-import { toFixed } from "../../hooks/useToFixed";
 import { useState, useEffect } from "react";
-import { removeKebabCase, removeSpaceCase } from "../../hooks/useRemoveCases";
+import { removeKebabCase } from "../../hooks/useRemoveCases";
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Components
@@ -120,7 +118,7 @@ const Service = () => {
 		.then(res => {
 		})
 		.catch((err) => {
-			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -140,7 +138,7 @@ const Service = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -163,7 +161,7 @@ const Service = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/service", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 

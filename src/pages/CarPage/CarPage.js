@@ -12,6 +12,7 @@ import Alert from "../../components/Alert/Alert";
 
 const CarPage = () => {
 	const { plate } = useParams();
+
 	const token = localStorage.getItem('token');
 
 	const [car] = useFetch(`/car/${plate}`);
@@ -38,11 +39,11 @@ const CarPage = () => {
 		})
 		.then(res => {
 			if(res.status === 200 && !res.data.error){
-				navigate("/car", { state: { title: "Operação realizada com sucesso!", message: res.data.msg } });
+				navigate("/car", { state: { title: "Operação realizada com sucesso!", message: res.data.msg, type: "success" } });
 			}
 		})
 		.catch((err) => {
-			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 

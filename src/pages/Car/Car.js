@@ -47,7 +47,7 @@ const Car = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 
@@ -66,7 +66,7 @@ const Car = () => {
 			}
 		})
 		.catch((err) => {
-			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error } });
+			navigate("/car", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
 

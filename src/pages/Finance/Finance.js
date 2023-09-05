@@ -5,7 +5,6 @@ import "./Finance.css";
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from 'react';
 import { convert } from "../../hooks/useConvertIsoDate";
-import { toFixed } from "../../hooks/useToFixed";
 
 // Components
 import PieChart from "../../components/PieChart/PieChart";
@@ -17,9 +16,7 @@ const Finance = () => {
   const services = useFetch("/service");
   const employees = useFetch("/employee");
 
-
   const [totalGain, setTotalGain] = useState(0);
-  const [totalExpense, setTotalExpense] = useState('');
   const [monthlyData, setMonthlyData] = useState([]);
   const [showChart, setShowChart] = useState(false);
 
@@ -148,7 +145,7 @@ const Finance = () => {
   useEffect(() => {
     setTimeout(() => {
       setShowChart(true);
-    }, 1000)
+    }, 1500)
   }, []);
 
   return (

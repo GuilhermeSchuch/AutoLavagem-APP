@@ -15,19 +15,18 @@ import axios from "axios";
 import { useState } from "react";
 
 const Login = () => {
+  // Globals
+  const URL = "https://white-grasshopper-gear.cyclic.cloud";
+  // const URL = "https://alemaoautolavagem.onrender.com";
+  // const URL = "http://localhost:3001";
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Globals
-  const URL = "https://white-grasshopper-gear.cyclic.cloud";
-  // const URL = "https://alemaoautolavagem.onrender.com";
-  // const URL = "http://localhost:3001";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
