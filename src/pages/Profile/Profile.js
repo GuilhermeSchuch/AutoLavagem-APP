@@ -21,9 +21,9 @@ const EmployeePage = () => {
   
 
   // Globals
-  // const URL = "https://white-grasshopper-gear.cyclic.cloud";
+  const URL = "https://white-grasshopper-gear.cyclic.cloud";
 	// const URL = "https://alemaoautolavagem.onrender.com";
-	const URL = "http://localhost:3001";
+	// const URL = "http://localhost:3001";
 
   const handleSubmit = (e) => {
 		e.preventDefault();
@@ -44,7 +44,7 @@ const EmployeePage = () => {
 		})
     .catch((err) => {
       setLoading(false);
-      
+
 			navigate("/profile", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
 		});
 	}
