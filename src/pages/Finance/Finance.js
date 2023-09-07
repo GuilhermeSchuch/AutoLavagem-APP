@@ -1,24 +1,43 @@
 // CSS
 import "./Finance.css";
 
+// Axios
+import axios from "axios";
+
 // Hooks
 import useFetch from "../../hooks/useFetch";
 import { useState, useEffect } from 'react';
 import { convert } from "../../hooks/useConvertIsoDate";
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // Components
 import PieChart from "../../components/PieChart/PieChart";
+import Loader from "../../components/Loader/Loader";
+
+// SheetJs
+import * as XLSX from 'xlsx'
 
 // Google Charts
 import { Chart } from 'react-google-charts';
 
 const Finance = () => {
+  // Globals
+	const URL = "https://white-grasshopper-gear.cyclic.cloud";
+	// const URL = "https://alemaoautolavagem.onrender.com";
+	// const URL = "http://localhost:3001";
+
+  const token = localStorage.getItem('token');
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const services = useFetch("/service");
   const employees = useFetch("/employee");
 
   const [totalGain, setTotalGain] = useState(0);
   const [monthlyData, setMonthlyData] = useState([]);
   const [showChart, setShowChart] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (services) {
@@ -125,14 +144,12 @@ const Finance = () => {
     setMonthlyData(result);
   };
 
-
   // Convert dailyData object to an array of arrays for Line Chart data
   const chartData = [['Data', 'Ganho', 'Despesa', 'Líquido']];
 
   Object.values(dailyData).forEach((data) => {
     chartData.push([data.date, data.totalGain, data.totalExpense, data.totalGain - data.totalExpense]);
   });
-
   
   const pieData = [["Name", "Value"]];
 
@@ -147,6 +164,39 @@ const Finance = () => {
       setShowChart(true);
     }, 1500)
   }, []);
+
+
+  const generateXLSX = (data) => {
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.json_to_sheet(data);
+
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet");
+    XLSX.writeFile(wb, "Planilha.xlsx");
+  }
+
+  const [initialDate, setInitialDate] = useState('');
+  const [finalDate, setFinalDate] = useState('');
+  const [serviceDate, setServiceDate] = useState('');
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios({
+			method: 'GET',
+			url: `${URL}/service/${initialDate}/${finalDate}`,
+			headers: { Authorization: 'Bearer ' + token }
+		})
+		.then(res => {
+			if(res.status === 200 && !res.data.error){
+				setServiceDate(res.data);
+        generateXLSX(res.data);
+			}
+		})
+		.catch((err) => {
+			navigate("/", { state: { title: "Operação não realizada!", message: err.response.data.error, type: "danger" } });
+		});
+  }
 
   return (
     <div className="container">
@@ -185,6 +235,40 @@ const Finance = () => {
               <PieChart key={index} data={item} />
             ))}
           </div>
+        </div>
+
+        <div className="mt-5">
+          <h1>Gerar Planilha</h1>
+
+          <form onSubmit={handleSubmit} className="col-md-3">
+            <div className="form-group">
+              <label>Data Inicial</label>
+              <input 
+                type="date" 
+                className="form-control mb-3" 
+                name="initialDate"                
+                value={initialDate}
+                onChange={(e) => setInitialDate(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Data Final</label>
+              <input 
+                type="date" 
+                className="form-control mb-3" 
+                name="initialDate"                
+                value={finalDate}
+                onChange={(e) => setFinalDate(e.target.value)}
+              />
+            </div>
+
+            {!loading ? (
+              <button type="submit" className="btn btn-primary col-md-3 col-5" onClick={((e) => handleSubmit(e))}>Gerar</button>
+            ) : (
+              <Loader />
+            )}
+          </form>
         </div>
       </div>
     </div>
