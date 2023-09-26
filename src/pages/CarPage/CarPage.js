@@ -92,7 +92,7 @@ const CarPage = () => {
 			</form>
 
 			<div className="modal-footer">
-				<button type="button" className="btn btn-secondary" onClick={() => navigate("/car")}>Cancelar edição</button>
+				<button type="button" className="btn btn-secondary" onClick={() => navigate("/car")}>Voltar</button>
 			</div>
 	</div>
   )

@@ -6,7 +6,7 @@ import { toFixed } from "../../hooks/useToFixed";
 
 const PieChart = ({ data }) => {
   return (
-    <div className="shadow text-center col-xl-3 col-md-5 mb-3 p-2">
+    <div className="shadow text-center col-xl-3 col-md-5 col-12 mb-3 p-2">
       <Chart
         width={"100%"}
         height={"400px"}

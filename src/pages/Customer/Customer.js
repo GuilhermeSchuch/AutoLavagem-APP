@@ -112,7 +112,7 @@ const Customer = () => {
 						<tr>
 							<th scope="col">Nome</th>
 							<th scope="col">Telefone</th>
-							<th scope="col">CPF</th>
+							<th scope="col">CPF/CNPJ</th>
 							<th scope="col">Carro(s)</th>
 							<th scope="col">Ações</th>
 						</tr>
@@ -174,7 +174,7 @@ const Customer = () => {
 										<input type="text" className="form-control" autoComplete='off' id="plate" name="plate" value={tel} onChange={(e) => setTel(e.target.value)} />
 									</div>
 									<div className="mb-3">
-										<label className="col-form-label">CPF:</label>
+										<label className="col-form-label">CPF/CNPJ:</label>
 										<input type="text" className="form-control" autoComplete='off' id="name" name="name" value={cpf} onChange={(e) => setCpf(e.target.value)} />
 									</div>
 

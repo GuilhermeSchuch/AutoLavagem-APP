@@ -120,7 +120,7 @@ const CustomerPage = () => {
 						type="text" 
 						className="form-control" 
 						name="cpf"
-						placeholder="Insira o telefone" 
+						placeholder="Insira o CPF" 
 						autoComplete='off'
 						value={cpf}
 						onChange={(e) => setCpf(e.target.value)}
@@ -170,7 +170,7 @@ const CustomerPage = () => {
 			</div>
 
 			<div className="modal-footer">
-				<button type="button" className="btn btn-secondary" onClick={() => navigate("/customer")}>Cancelar edição</button>
+				<button type="button" className="btn btn-secondary" onClick={() => navigate("/customer")}>Voltar</button>
 			</div>
 			
 		</div>

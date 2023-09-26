@@ -269,7 +269,7 @@ const Service = () => {
 									</div>
 
 									<div className="mb-3">
-										<label className="col-form-label">Dispesa (geral):</label>
+										<label className="col-form-label">Despesa (geral):</label>
 										<input type="number" step={0.01} className="form-control" autoComplete='off' id="name" name="name" value={expense} onChange={(e) => setExpense(e.target.value)} />
 									</div>
 

@@ -77,7 +77,7 @@ const EmployeePage = () => {
       </form>
 
       <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" onClick={() => navigate("/employee")}>Cancelar edição</button>
+        <button type="button" className="btn btn-secondary" onClick={() => navigate("/employee")}>Voltar</button>
       </div>
     </div>
   )

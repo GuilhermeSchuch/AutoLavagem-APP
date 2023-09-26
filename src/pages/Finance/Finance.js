@@ -198,6 +198,39 @@ const Finance = () => {
 		});
   }
 
+
+  const [chartWidth, setChartWidth] = useState('100%');
+  const [chartHeight, setChartHeight] = useState('500px');  
+
+  useEffect(() => {
+    // Function to update chart dimensions based on window width
+    const updateChartDimensions = () => {
+      if (window.innerWidth < 768) {
+        setChartWidth('100%');
+        setChartHeight('300px');
+      } 
+      else if(window.innerWidth > 1400){
+        setChartWidth('100%');
+        setChartHeight('700px');
+      }
+      else{
+        setChartWidth('100%');
+        setChartHeight('500px');
+      }
+    };
+
+    // Listen for window resize events
+    window.addEventListener('resize', updateChartDimensions);
+
+    // Initial chart dimensions
+    updateChartDimensions();
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('resize', updateChartDimensions);
+    };
+  }, []);
+
   return (
     <div className="container">
       <div className="row">
@@ -207,8 +240,8 @@ const Finance = () => {
           <div className="shadow">
             {showChart && (
               <Chart
-                width={'100%'}
-                height={'500px'}
+                width={chartWidth}
+                height={chartHeight}
                 chartType="LineChart"
                 loader={<div>Carregando gráfico</div>}
                 data={chartData}
@@ -230,7 +263,7 @@ const Finance = () => {
       
         <div className="mt-5">
           <h1>Ganhos Mensais</h1>
-          <div className="d-flex flex-wrap">
+          <div className="d-flex flex-wrap col-12">
             {monthlyData.map((item, index) => (
               <PieChart key={index} data={item} />
             ))}
@@ -249,6 +282,7 @@ const Finance = () => {
                 name="initialDate"                
                 value={initialDate}
                 onChange={(e) => setInitialDate(e.target.value)}
+                required
               />
             </div>
 
@@ -260,11 +294,12 @@ const Finance = () => {
                 name="initialDate"                
                 value={finalDate}
                 onChange={(e) => setFinalDate(e.target.value)}
+                required
               />
             </div>
 
             {!loading ? (
-              <button type="submit" className="btn btn-primary col-md-3 col-5" onClick={((e) => handleSubmit(e))}>Gerar</button>
+              <button type="submit" className="btn btn-primary col-5" onClick={((e) => handleSubmit(e))}>Gerar</button>
             ) : (
               <Loader />
             )}
