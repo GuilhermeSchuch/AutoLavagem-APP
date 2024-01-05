@@ -33,6 +33,7 @@ Repository of the API is private.
 - Manage Employees.
 - Manage Services.
 - Manage Finances.
+- Manage Spreadsheets.
 
 
 ## Contact
