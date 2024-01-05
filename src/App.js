@@ -39,7 +39,7 @@ function App() {
     if (timeDifference >= oneDayInMilliseconds) {
       localStorage.removeItem('token');
       localStorage.removeItem('setDate');
-      window.location.href = "https://alemaoautolavagem.netlify.app/login";
+      window.location.href = "http://localhost:3000/login";
     }
   }
 

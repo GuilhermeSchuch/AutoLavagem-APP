@@ -23,9 +23,7 @@ const Service = () => {
 	const services = useFetch("/service");
 
 	// Globals
-	const URL = "https://white-grasshopper-gear.cyclic.cloud";
-	// const URL = "https://alemaoautolavagem.onrender.com";
-	// const URL = "http://localhost:3001";
+	const URL = "http://localhost:3001";
 
 	const token = localStorage.getItem('token');
 

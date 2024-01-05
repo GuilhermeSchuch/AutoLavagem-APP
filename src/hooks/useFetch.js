@@ -11,9 +11,7 @@ const useFetch = (url) => {
 
 	const navigate = useNavigate();
 
-	const URL = "https://white-grasshopper-gear.cyclic.cloud";
-	// const globalUrl = "https://alemaoautolavagem.onrender.com";
-	// const globalUrl = "http://localhost:3001";
+	const URL = "http://localhost:3001";
 
 	const fetchData = async () => {
 		try {
